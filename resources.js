@@ -1,4 +1,4 @@
-// JavaScript File
+// JavaScript File (resources)
 function resource(passable, grabbable, texture, hackable){
     this.passable = passable;
     this.grabbable = grabbable;
@@ -6,7 +6,7 @@ function resource(passable, grabbable, texture, hackable){
     this.hackable = hackable;
 }
 
-var weakWall = new resource(false,false,"",true);
-var wall = new resource(false,false,"",false);
-var floor = new resource(true, false, "", false);
-var backpack = new resource(true,true,"",false);
+var weakWall = new resource(false,false,"bricks",true);
+var wall = new resource(false,false,"bricks",false);
+var floor = new resource(true, false, "transparent", false);
+var backpack = new resource(true,true,"chest",false);
