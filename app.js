@@ -144,7 +144,6 @@ function draw(){
     clear();
     drawRoom(currentRoom);
     setTimeout(draw,(1000/16));
-    console.log("drawing");
 }
 
 //function that takes in room
@@ -153,11 +152,13 @@ function drawRoom(room){
     //draw each image into the proper spot
     var cycles = 0
     for(var prop in room){
-        var img = document.getElementById((room[prop].texture));
-        var x = (cycles%7);
-        var y = ((cycles-cycles%7)/7);
-        context.drawImage(img,(x*100),(y*100),100,100);
-        cycles++;
+        if(cycles<49){
+            var img = document.getElementById((room[prop].texture));
+            var x = (cycles%7);
+            var y = ((cycles-cycles%7)/7);
+            context.drawImage(img,(x*100),(y*100),100,100);
+            cycles++;
+        }
     }
     //var love
     
