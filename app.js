@@ -532,7 +532,7 @@ function tutorial(run,run1,run2,run3){
     }
 }
 
-tutorial(true,true,true,true);
+tutorial(false,true,true,true);
 
 function removeLocks(amt){
     for(var i=0; i<amt;i++){

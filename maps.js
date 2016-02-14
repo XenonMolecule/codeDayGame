@@ -1,6 +1,6 @@
 // JavaScript File
 var rooms = [];
-function room(block0,block1,block2,block3,block4,block5,block6,block7,block8,block9,block10,block11,block12,block13,block14,block15,block16,block17,block18,block19,block20,block21,block22,block23,block24,block25,block26,block27,block28,block29,block30,block31,block32,block33,block34,block35,block36,block37,block38,block39,block40,block41,block42,block43,block44,block45,block46,block47,block48,coordX,coordY,playerSpawn){
+function room(block0,block1,block2,block3,block4,block5,block6,block7,block8,block9,block10,block11,block12,block13,block14,block15,block16,block17,block18,block19,block20,block21,block22,block23,block24,block25,block26,block27,block28,block29,block30,block31,block32,block33,block34,block35,block36,block37,block38,block39,block40,block41,block42,block43,block44,block45,block46,block47,block48,coordX,coordY,playerSpawn,leftKey,rightKey,upKey,downKey){
     this.block0 = block0;
     this.block1 = block1;
     this.block2 = block2;
@@ -54,11 +54,15 @@ function room(block0,block1,block2,block3,block4,block5,block6,block7,block8,blo
     this.coordX = coordX;
     this.coordY = coordY;
     this.playerSpawn = playerSpawn;
+    this.leftKey = leftKey;
+    this.rightKey = rightKey;
+    this.upKey = upKey;
+    this.downKey = downKey;
     rooms.push(this);
 }
 
-var firstRoom = new room(wall,wall,wall,floor,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,key,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,wall,wall,wall,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,4,8,45);
-var secondRoom = new room(wall,wall,wall,floor,wall,wall,wall,wall,backpack,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,floor,floor,floor,floor, floor, floor, floor,wall,floor,floor,floor, floor, floor,wall,wall,floor,key2,floor,floor,floor,wall,wall,wall,wall,floor,wall,wall,wall,4,7,45);
-var stickRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,floor,floor,floor,stick,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,wall,wall,wall,wall,5,7,21);
-var stringRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,string,floor,floor,floor,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,wall,wall,wall,wall,3,7,27);
-var leverRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,wall,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,floor,wall,wall,wall,4,6,45);
+var firstRoom = new room(wall,wall,wall,floor,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,key,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,wall,wall,wall,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,4,8,45,false,false,false,false);
+var secondRoom = new room(wall,wall,wall,floor,wall,wall,wall,wall,backpack,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,floor,floor,floor,floor, floor, floor, floor,wall,floor,floor,floor, floor, floor,wall,wall,floor,key2,floor,floor,floor,wall,wall,wall,wall,floor,wall,wall,wall,4,7,45,true,true,false,false);
+var stickRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,floor,floor,floor,stick,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,wall,wall,wall,wall,5,7,21,false,false,false,false);
+var stringRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,string,floor,floor,floor,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,wall,wall,wall,wall,3,7,27,false,false,false,false);
+var leverRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,wall,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,floor,wall,wall,wall,4,6,45,false,false,false,false);
