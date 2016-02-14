@@ -15,5 +15,5 @@ var floor = new resource(true, false, "transparent", false, "floor");
 var backpack = new resource(false,true,"chest",false, "backpack");
 var key = new resource(false, true, "chest", false,"key",keyInv,"Wow, I found a key!");
 var key2 = new resource(false, true, "chest", false,"key2",key2Inv,"Oh No! I don't have enough room for this, \nI better find a backpack.");
-var stick = new resource(false, true, "chest", false,"stick", stickInv);
-var string = new resource(false, true, "chest", false,"string", stringInv);
+var stick = new resource(false, true, "chest", false,"stick", stickInv,"What am I going to do with a stick?");
+var string = new resource(false, true, "chest", false,"string", stringInv,"Oh, a string!");

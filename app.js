@@ -328,15 +328,23 @@ $(window).on("keypress",function(e){
         } else if((e.charCode==97)&&((charX==0)&&(charY==3))&&(thisRoom.leftDoor)){
             //go left room
             transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
+            charX=6;
+            charY=3;
         } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
             //go right room
             transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
+            charX=0;
+            charY=3;
         } else if((e.charCode==119)&&((charX==3)&&(charY==0))&&(thisRoom.topDoor)){
             //go up room
             transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
+            charX=3;
+            charY=6;
         } else if((e.charCode==115)&&((charX==3)&&(charY==6))&&(thisRoom.bottomDoor)){
             //go down room
             transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
+            charX=3;
+            charY=0;
         }
     }
     if((e.charCode==13)&&(enableDisable)){
@@ -387,11 +395,10 @@ function getPassability(block){
 
 function getGrabbability(block){
     var prop = "block"+block;
+    console.log(prop);
     return currentRoom[prop].grabbable;
 }
-function inventory(){
-    
-}
+
 function getAdjacent(position){
     var above = position-7;
     var left = position-1;
@@ -412,25 +419,36 @@ function getAdjacent(position){
         prop = "block"+right;
         resource = currentRoom[prop].invObject;
     }
-    if(inventory.length<inventorySpace){
-        if(currentRoom[prop].name=="key2"){
-            if(inventory.length==inventorySpace){
+    if(currentRoom[prop].name!="backpack"){
+        if(inventory.length<inventorySpace){
+            if(currentRoom[prop].name=="key2"){
+                if(inventory.length==inventorySpace){
+                    displayHelpText(currentRoom[prop].textOnPickup);
+                } else {
+                    displayHelpText("I wonder what I can do with this key?");
+                }
+            }else {
+                console.log(currentRoom[prop].textOnPickup);
+                displayHelpText(currentRoom[prop].textOnPickup);
+            }
+            inventory.push(resource.invObject);
+            
+            $("#slot"+(inventory.length-1)).attr("src",currentRoom[prop].invObject.texture);
+            currentRoom[prop] = floor;
+            
+        } else {
+            console.log("inventoryFull");
+            if(currentRoom[prop].name=="key2"){
                 displayHelpText(currentRoom[prop].textOnPickup);
             } else {
-                displayHelpText("I wonder what I can do with this key?");
+                displayHelpText("Oh no, I don't have enough room for this!");
             }
-        }else {
-            displayHelpText(currentRoom[prop].textOnPickup);
         }
-        inventory.push(resource);
-        currentRoom[prop] = floor;
     } else {
-        console.log("inventoryFull");
-        if(currentRoom[prop].name=="key2"){
-            displayHelpText(currentRoom[prop].textOnPickup);
-        } else {
-            displayHelpText("Oh no, I don't have enough room for this!");
-        }
+        inventorySpace+=3;
+        removeLocks(3);
+        displayHelpText("Woooooo! I got a backpack! Now I can carry more items to school AND look scholarly!")
+        currentRoom[prop] = floor;
     }
 }
 //make it so that if the user interacts with the door it goes to the next room
@@ -455,11 +473,12 @@ function transferRooms(xPos,yPos){
 function funText(textString, position){
     textArray=[];
     canMove=false;
+    console.log(textString);
     var textArray = textString.split("");
     displayText=displayText+textArray[position];
     $("#textRPG").text(displayText);
     if(position<(textArray.length-1)){
-        setTimeout(funText,100,textString,(position+1));
+        setTimeout(funText,40,textString,(position+1));
     } else {
         enableDisable=true;
     }
@@ -469,6 +488,7 @@ function displayHelpText(string){
     $(".rpgText").attr("hidden",false);
     displayText="";
     funText(string,0);
+    console.log(string);
 }
 function tutorial(run,run1,run2,run3){
     if(run){
@@ -489,9 +509,21 @@ function tutorial(run,run1,run2,run3){
             }
         }
         if(stageOfTutorial<3){
-            setTimeout(tutorial,100,true,run1,run2,run3);
+            setTimeout(tutorial,10,true,run1,run2,run3);
         }
     }
 }
 
-tutorial(true,true,true,true);
+tutorial(false,true,true,true);
+
+function removeLocks(amt){
+    for(var i=0; i<amt;i++){
+        $("#slot"+((inventorySpace-3)+i)).hide(500);
+        setTimeout(setResources,500,i);
+    }
+}
+
+function setResources(looped){
+    $("#slot"+((inventorySpace-3)+looped)).attr("src","resources/transparent.png");
+    $("#slot"+((inventorySpace-3)+looped)).show(500);
+}
