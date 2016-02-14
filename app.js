@@ -8,6 +8,8 @@ var closedList = [];
 var openList = [];
 var nodes = [];
 var currentRoom = firstRoom;
+var charX = 3;
+var charY = 6;
 
 $(window).on("resize",function(){
     $("#game").attr("width",700);
@@ -232,6 +234,7 @@ function excludeBadGuys(){
 function draw(){
     clear();
     drawRoom(currentRoom);
+    drawCharacter();
     setTimeout(draw,(1000/16));
 }
 
@@ -259,3 +262,8 @@ function clear(){
 
 draw();
 
+//draw character function
+function drawCharacter(){
+    var img = document.getElementById("character");
+    context.drawImage(img,(charX*100),(charY*100),100,100);
+}
