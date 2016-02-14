@@ -254,6 +254,10 @@ function draw(){
     drawRoom(currentRoom);
     drawCharacter();
     setTimeout(draw,(1000/16));
+    //temporaryCode
+    if((currentRoom.coordX===4)&&(currentRoom.coordY===6)){
+        document.location = "https://sethtrei.github.io/tero/body.html" 
+    }
 }
 
 //function that takes in room
@@ -331,6 +335,24 @@ $(window).on("keypress",function(e){
                 transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
                 charX=6;
                 charY=3; 
+            }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
+                var theIndex=0;
+                for(var i=0; i<inventory.length;i++){
+                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                           theIndex=i;
+                       }
+                }
+                inventory.splice(theIndex,1);
+                var newInv = [];
+                $(".itemHolder").children().each(function(){
+                    $(this).attr("src","resources/transparent.png");
+                });
+                for(var i=0;i<inventory.length;i++){
+                    newInv[i]=inventory[i];
+                    $("#slot"+i).attr("src",inventory[i].texture);
+                }
+                currentRoom.leftKey=false;
+                $(".selected").children().attr("src","resources/transparent.png");
             }
         } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
             //go right room
@@ -355,6 +377,16 @@ $(window).on("keypress",function(e){
                 transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
                 charX=3;
                 charY=6;
+            } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
+                var theIndex=0;
+                for(var i=0; i<inventory.length;i++){
+                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                           theIndex=i;
+                       }
+                }
+                inventory.splice(theIndex,1);
+                currentRoom.upKey=false;
+                $(".selected").children().attr("src","resources/transparent.png");
             }
         } else if((e.charCode==115)&&((charX==3)&&(charY==6))&&(thisRoom.bottomDoor)){
             //go down room
@@ -362,6 +394,16 @@ $(window).on("keypress",function(e){
                 transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
                 charX=3;
                 charY=0;
+            }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
+                var theIndex=0;
+                for(var i=0; i<inventory.length;i++){
+                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                           theIndex=i;
+                       }
+                }
+                inventory.splice(theIndex,1);
+                currentRoom.downKey=false;
+                $(".selected").children().attr("src","resources/transparent.png");
             }
         }
     }
