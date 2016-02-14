@@ -1,7 +1,4 @@
-  // JavaScript File
-var my_canvas = document.getElementById("game");
-var context = my_canvas.getContext("2d");
-var x=0;
+  // JavaScript File(meme generator)
 var y=0;
 var context = $("canvas")[0].getContext("2d");
 var closedList = [];
@@ -14,6 +11,12 @@ var debugData;
 var canMove = true;
 var inventory = [];
 var inventorySpace = 1;
+var thisRoom = {
+    leftDoor:false,
+    rightDoor:false,
+    topDoor:false,
+    bottomDoor:false
+}
 //var love???
 
 $(window).on("resize",function(){
@@ -261,18 +264,22 @@ function drawRoom(room){
     for(var i = 0; i<rooms.length; i++){
         if((currentRoom.coordX-1===rooms[i].coordX)&&(currentRoom.coordY===rooms[i].coordY)){
             var img = document.getElementById("leftdoor");
+            thisRoom.leftDoor = true;
             context.drawImage(img,0,300,100,100);
         }
         if((currentRoom.coordX+1===rooms[i].coordX)&&(currentRoom.coordY===rooms[i].coordY)){
             var img = document.getElementById("rightdoor");
+            thisRoom.rightDoor = true;
             context.drawImage(img,600,300,100,100);
         }
         if((currentRoom.coordY-1===rooms[i].coordY)&&(currentRoom.coordX===rooms[i].coordX)){
+            thisRoom.topDoor = true;
             var img = document.getElementById("topdoor");
             context.drawImage(img,300,0,100,100);
         }
         if((currentRoom.coordY+1===rooms[i].coordY)&&(currentRoom.coordX===rooms[i].coordX)){
-            var img = document.getElementById("downdoor");
+            thisRoom.bottomDoor = true;
+            var img = document.getElementById("bottomdoor");
             context.drawImage(img,300,600,100,100);
         }
     }
@@ -295,15 +302,31 @@ $(window).on("keypress",function(e){
         debugData = e;
         var pos = charX+(charY*7);
         if((e.charCode==97)&&(charX>0)&&(getPassability((pos-1)))){
+            //left
             glideX(charX,charX-1);
         } else if((e.charCode===100)&&(charX<6)&&(getPassability(pos+1))){
+            //right
             glideX(charX,charX+1);
         } else if((e.charCode==119)&&(charY>0)&&(getPassability((pos-7)))){
+            //up
             glideY(charY,charY-1);
         } else if((e.charCode==115)&&(charY<6)&&(getPassability((pos+7)))){
+            //down
             glideY(charY,(charY+1));
         } else if((e.charCode==13)){
             getAdjacent(pos);
+        } else if((e.charCode==97)&&((charX==0)&&(charY==3))&&(thisRoom.leftDoor)){
+            //go left room
+            transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
+        } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
+            //go right room
+            transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
+        } else if((e.charCode==119)&&((charX==3)&&(charY==0))&&(thisRoom.topDoor)){
+            //go up room
+            transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
+        } else if((e.charCode==115)&&((charX==3)&&(charY==6))&&(thisRoom.bottomDoor)){
+            //go down room
+            transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
         }
     }
 });
@@ -347,7 +370,9 @@ function getGrabbability(block){
     var prop = "block"+block;
     return currentRoom[prop].grabbable;
 }
-
+function inventory(){
+    
+}
 function getAdjacent(position){
     var above = position-7;
     var left = position-1;
@@ -373,5 +398,23 @@ function getAdjacent(position){
         currentRoom[prop] = floor;
     } else {
         console.log("inventoryFull");
+    }
+}
+//make it so that if the user interacts with the door it goes to the next room
+
+function transferRooms(xPos,yPos){
+    console.log("x:"+xPos+" y:"+yPos);
+    for(var i = 0; i<rooms.length; i++){
+        if((rooms[i].coordX==xPos)&&(rooms[i].coordY==yPos)){
+            currentRoom = rooms[i];
+            thisRoom = {
+                leftDoor:false,
+                rightDoor:false,
+                bottomDoor:false,
+                topDoor:false
+            }
+            charX = (currentRoom.playerSpawn%7);
+            charY = (currentRoom.playerSpawn-charX)/7;
+        }
     }
 }

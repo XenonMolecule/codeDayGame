@@ -2,5 +2,9 @@
     background-color:#000;
     
 }
-
+#sidebar{
+ height: 700;
+ width: 100;
+ background-color: black;
+}
 
