@@ -5,7 +5,18 @@
     </head>
     <body>
         <!--XX_TY3_DY3_GUYZ_XX-->
-         <div id= "sidebar"></div>
+        <div id= "sidebar">
+            <ul>
+                <li><div class="itemHolder"><img class = "invItem" src="resources/stick.png"></div></li>
+                <li><div class="itemHolder"><img class = "invItem" src="resources/string.png"></div></li>
+            </ul>
+        </div>
+        <div class="rpgText" hidden>
+            <div class="textSeparator"></div>
+            <img class="face" src="resources/face.png">
+            <p id="textRPG"></p>
+        </div>
+        <div id="sidebarDiv"></div>
         <canvas id= "game" height= "700" width="700"></canvas>
         <!--initialize the images-->
         <div style="display:none">
@@ -16,6 +27,7 @@
             <img id="inv" src="resources/inv.png">
             <img id="transparent" src="resources/transparent.png">
             <img id="key" src="resources/key.png">
+            <img id="key2" src="resources/key2.png">
             <img id="stick" src="resources/stick.png">
             <img id="string" src="resources/string.png">
             <img id="character" src="resources/sprite.png">
@@ -23,9 +35,12 @@
             <img id="topdoor" src="resources/topdoor.png">
             <img id="bottomdoor" src="resources/bottomdoor.png">
             <img id="rightdoor" src="resources/rightdoor.png">
+            <img id="face" src="resources/face.png">
         </div>
+        
         <!--Code above here plz-->
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript" src="invItem.js"></script>
         <script type="text/javascript" src="resources.js"></script>
         <script type="text/javascript" src="maps.js"></script>
         <script type="text/javascript" src="app.js"></script>

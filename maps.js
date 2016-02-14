@@ -57,7 +57,8 @@ function room(block0,block1,block2,block3,block4,block5,block6,block7,block8,blo
     rooms.push(this);
 }
 
-var firstRoom = new room(floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,backpack,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,wall,wall,wall,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,4,8,45);
-var secondRoom = new room(floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,backpack,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,wall, wall, floor, floor,floor,floor,floor,key, wall, floor,floor,floor,floor,floor,floor,wall,floor,floor,floor,floor,floor,floor,wall, floor,floor,4,7,45);
+var firstRoom = new room(floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,key,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,wall,wall,wall,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,4,8,45);
+var secondRoom = new room(backpack,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor, floor, floor, floor,floor,floor,floor,key2, floor, floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor,floor, floor,floor,4,7,45);
 var stickRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,floor,floor,floor,stick,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,wall,wall,wall,wall,5,7,21);
+
 var stringRoom = new room(wall,wall,wall,wall,wall,wall,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,stick,floor,floor,floor,wall,floor,floor,floor,floor,floor,wall,wall,floor,floor,floor,floor,floor,wall,wall,wall,wall,wall,wall,wall,wall,3,7,27);

@@ -1,10 +1,72 @@
+@font-face {
+    font-family: 'font'; /*a name to be used later*/
+    src: url('resources/font.ttf') format('truetype');/*URL to font*/
+}
+
+
+
 #game{
     background-color:#000;
     
 }
 #sidebar{
- height: 700;
- width: 100;
- background-color: black;
+    height: 700px;
+    width: 100px;
+    background-color: black;
+    position:absolute;
 }
 
+#sidebarDiv{
+    height:700px;
+    width:10px;
+    background-color:#001a4d;
+    position:absolute;
+    z-index:100;
+}
+
+.invItem{
+    height:60px;
+    width:60px;
+    margin-left:10px;
+    margin-top:10px;
+}
+
+.itemHolder{
+    border-radius:50%;
+    height:80px;
+    width:80px;
+    margin-left:-25px;
+    background-color:black;
+}
+
+ul{
+    list-style:none;
+}
+
+.rpgText{
+    position:absolute;
+    background-color:black;
+    height:200px;
+    width:700px;
+    z-index:2000;
+}
+
+.face{
+    margin-top:50px;
+    margin-left:10px;
+}
+
+.textSeparator{
+    margin-top:-10px;
+    height:10px;
+    background-color:#001a4d;
+}
+
+#textRPG{
+    font-family:font;
+    color:#FFF;
+    font-size:18px;
+    position:absolute;
+    margin-top:-80px;
+    margin-left:120px;
+}

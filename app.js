@@ -23,10 +23,16 @@ $(window).on("resize",function(){
     $("#game").attr("width",700);
     $("#game").attr("height",700);
     setTimeout($("#game").css("margin-left",((window.innerWidth/2)-350)),100);
-    console.log(((window.innerWidth/2)-350));
+    $("#sidebar").css("margin-left",(window.innerWidth/2)+300);
+    $("#sidebarDiv").css("margin-left",(window.innerWidth/2)+300);
+    console.log(((window.innerWidth/2)-400));
 });
 
-$("#game").css("margin-left",((window.innerWidth/2)-350));
+$("#game").css("margin-left",((window.innerWidth/2)-400));
+$("#sidebar").css("margin-left",(window.innerWidth/2)+300);
+$("#sidebarDiv").css("margin-left",(window.innerWidth/2)+300);
+$(".rpgText").css("margin-top",500);
+$(".rpgText").css("margin-left",(window.innerWidth/2)-400);
 
 //Task: Click Responsivness
 //call function on click
@@ -382,16 +388,16 @@ function getAdjacent(position){
     var prop;
     if(getGrabbability(above)){
         prop = "block"+above;
-        resource = currentRoom[prop];
+        resource = currentRoom[prop].invObject;
     } else if(getGrabbability(left)){
         prop = "block"+left;
-        resource = currentRoom[prop];
+        resource = currentRoom[prop].invObject;
     } else if(getGrabbability(right)){
         prop = "block"+right;
-        resource = currentRoom[prop];
+        resource = currentRoom[prop].invObject;
     } else if(getGrabbability(below)){
         prop = "block"+right;
-        resource = currentRoom[prop];
+        resource = currentRoom[prop].invObject;
     }
     if(inventory.length<inventorySpace){
         inventory.push(resource);
