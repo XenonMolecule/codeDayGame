@@ -17,6 +17,8 @@ var thisRoom = {
     topDoor:false,
     bottomDoor:false
 }
+var displayText="";
+var enableDisable=false;
 //var love???
 
 $(window).on("resize",function(){
@@ -335,6 +337,14 @@ $(window).on("keypress",function(e){
             transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
         }
     }
+    if((e.charCode==13)&&(enableDisable)){
+            console.log("disappear");
+            enableDisable =false;
+            $("#textRPG").text("");
+            displayText = "";
+            $(".rpgText").attr("hidden",true);
+            canMove = true;
+        }
 });
 
 function glideX(currentPos,newPos){
@@ -401,6 +411,7 @@ function getAdjacent(position){
     }
     if(inventory.length<inventorySpace){
         inventory.push(resource);
+        displayHelpText(currentRoom[prop].textOnPickup);
         currentRoom[prop] = floor;
     } else {
         console.log("inventoryFull");
@@ -423,4 +434,22 @@ function transferRooms(xPos,yPos){
             charY = (currentRoom.playerSpawn-charX)/7;
         }
     }
+}
+
+function funText(textString, position){
+    canMove=false;
+    var textArray = textString.split("");
+    displayText=displayText+textArray[position];
+    $("#textRPG").text(displayText);
+    if(position<(textArray.length-1)){
+        setTimeout(funText,100,textString,(position+1));
+    } else {
+        enableDisable=true;
+    }
+}
+
+function displayHelpText(string){
+    $(".rpgText").attr("hidden",false);
+    displayText="";
+    funText(string,0);
 }
