@@ -1,6 +1,4 @@
-  // JavaScript File
-var my_canvas = document.getElementById("game");
-var context = my_canvas.getContext("2d");
+// JavaScript File
 var x=0;
 var y=0;
 var context = $("canvas")[0].getContext("2d");
@@ -69,13 +67,13 @@ function pathfinding(map,start,end){
     }
     cycles = 0;
     do{
-        if(cycles >= openList.length){
-            cycles = 0;
+        if(cycles>=openList.length){
+            cycles=0;
         }
-        currentNode = openList[cycles];
+        currentNode=openList[cycles];
         closedList.push(currentNode);
         openList.splice(openList.indexOf(currentNode),1);
-        if(currentNode === end){
+        if(currentNode===end){
             break;
         }
         //put adjacent blocks to the current node on the open list
@@ -84,26 +82,17 @@ function pathfinding(map,start,end){
         calcF();
         //cycle through open list, finding new nodes to add
         //repeat calculations until you find the end node
-        //sortByF();
-        console.log("trying");
-        console.log(openList.length);
-    } while(openList.length>0);
+        sortByF();
+    }while(openList.length>0);
     //go through the parent nodes of the successful path
     var testNode = currentNode;
     var path = [];
-    var cycles = 0;
-    if(currentNode==end){
-        while((testNode != start)&&(cycles<50)) {
-            console.log(testNode);
-            path.push(testNode);
-            console.log(nodes[testNode]);
-            testNode = nodes[testNode].parentNode;
-        }
-        path.reverse();
-        console.log("path found");
-    } else {
-        console.log("couldn't find a path");
+    while(testNode!=start){
+        path.push(testNode);
+        testNode = nodes[testNode].parentNode;
     }
+    path.reverse();
+    console.log("path found");
 }
 
 function calcAdjacent(currentNode){
@@ -113,10 +102,8 @@ function calcAdjacent(currentNode){
     var below = currentNode+7;
     var restrictions = [];
     for(var i = 0; i<closedList.length; i++){
-        //console.log(above);
         if(above == closedList[i]){
             restrictions.push("above");
-            console.log(pass);
         } else if(left == closedList[i]){
             restrictions.push("left");
         } else if(right == closedList[i]){
@@ -155,25 +142,18 @@ function calcAdjacent(currentNode){
     if(belowPasses==(restrictions.length-1)){
         openList.push(below);
     }
-    //excludeBadGuys();
     //calculate the g values of the adjacent blocks
     for(var i=0; i<nodes.length;i++){
         if(((nodes[i].position==above)||(nodes[i].position==left))||((nodes[i].position==right)||(nodes[i].position==below))){
             nodes[i].parentNode = currentNode;
-            if((retNodeProps(currentNode).g)!=0){
-                var gVal = retNodeProps(currentNode).g;
-            }
-            nodes[i].g = (gVal)+1;
+            nodes[i].g = (retNodeProps(currentNode).g)+1;
         }
     }
 }
 
 function calcF(){
     for(var i=0;i<openList.length;i++){
-        //console.log(openList[i]);
-        if(openList[i]>=0){
-            nodes[openList[i]].f=((nodes[openList[i]].g)+(nodes[openList[i]].h));
-        }
+        nodes[openList[i]].f=(nodes[openList[i]].g+nodes[openList[i]].h);
     }    
 }
 
@@ -183,23 +163,19 @@ function retNodeProps(nodePos){
             return nodes[i];
         }
     }
-    return 0;
 }
 
 function sortByF(){
     var sort = [];
     var counter = 0;
-    for(var i = 0;i < openList.length;i ++){
-        //console.log(openList[i]);
-        if(openList[i]>=0){
-            sort.push(nodes[openList[i]].f);
-        }
+    for(var i =0;i<openList.length;i++){
+        sort.push(nodes[openList[i]].f);
     }
     sort.sort(function(a, b){return a-b});
     var newOpenList=[];
-    for(var i = 0; i < openList.length; i++){
-        for(var j = 0; j < openList.length; i++){
-            if((nodes[openList[j]].f)===sort[i]){
+    for(var i=0;i<openList.length;i++){
+        for(var j=0; j<openList.length;i++){
+            if(nodes[openList[j]].f===sort[i]){
                 counter=0;
                 for(var k=0;k<newOpenList.length;i++){
                     if(newOpenList[k]===sort[i]){
@@ -217,14 +193,6 @@ function sortByF(){
     openList=[];
     for(var i=0; i<openList.length; i++){
         openList.push(newOpenList[i]);
-    }
-}
-
-function excludeBadGuys(){
-    for(var i=0;i<openList.length;i++){
-        if(openList[i]<0){
-            openList.splice(i,1);
-        }
     }
 }
 
