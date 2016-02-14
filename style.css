@@ -35,6 +35,9 @@
     border-radius:50%;
     height:80px;
     width:80px;
+    outline-width:2px;
+    outline-color:#00ff00;
+    outline-style:solid;
     margin-left:-25px;
     background-color:black;
 }

@@ -19,6 +19,8 @@ var thisRoom = {
 }
 var displayText="";
 var enableDisable=false;
+var stageOfTutorial=0;
+
 //var love???
 
 $(window).on("resize",function(){
@@ -344,6 +346,7 @@ $(window).on("keypress",function(e){
             displayText = "";
             $(".rpgText").attr("hidden",true);
             canMove = true;
+            stageOfTutorial++;
         }
 });
 
@@ -410,11 +413,24 @@ function getAdjacent(position){
         resource = currentRoom[prop].invObject;
     }
     if(inventory.length<inventorySpace){
+        if(currentRoom[prop].name=="key2"){
+            if(inventory.length==inventorySpace){
+                displayHelpText(currentRoom[prop].textOnPickup);
+            } else {
+                displayHelpText("I wonder what I can do with this key?");
+            }
+        }else {
+            displayHelpText(currentRoom[prop].textOnPickup);
+        }
         inventory.push(resource);
-        displayHelpText(currentRoom[prop].textOnPickup);
         currentRoom[prop] = floor;
     } else {
         console.log("inventoryFull");
+        if(currentRoom[prop].name=="key2"){
+            displayHelpText(currentRoom[prop].textOnPickup);
+        } else {
+            displayHelpText("Oh no, I don't have enough room for this!");
+        }
     }
 }
 //make it so that if the user interacts with the door it goes to the next room
@@ -437,6 +453,7 @@ function transferRooms(xPos,yPos){
 }
 
 function funText(textString, position){
+    textArray=[];
     canMove=false;
     var textArray = textString.split("");
     displayText=displayText+textArray[position];
@@ -453,3 +470,28 @@ function displayHelpText(string){
     displayText="";
     funText(string,0);
 }
+function tutorial(run,run1,run2,run3){
+    if(run){
+        if(run3){
+            displayHelpText("Woah, where am I?");
+            run3=false;
+        }
+        if(stageOfTutorial==1){
+            if(run1){
+                displayHelpText("Maybe I should look for chests to open by pressing enter");
+                run1=false;
+            }
+        }
+        if(stageOfTutorial==2){
+            if(run2){
+                displayHelpText("I think I can move with the w,a,s, and d keys");
+                run2=false;
+            }
+        }
+        if(stageOfTutorial<3){
+            setTimeout(tutorial,100,true,run1,run2,run3);
+        }
+    }
+}
+
+tutorial(true,true,true,true);
