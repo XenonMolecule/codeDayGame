@@ -1,4 +1,4 @@
-// JavaScript File (resources)
+// JavaScript File (resources and damk memes arsenal)
 function resource(passable, grabbable, texture, hackable){
     this.passable = passable;
     this.grabbable = grabbable;

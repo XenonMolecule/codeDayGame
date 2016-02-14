@@ -63,16 +63,36 @@ function pathfinding(map,start,end){
             closedList.push(cycles);
             cycles++;
         }
-        closedList.push(start);
+        openList.push(start);
     }
-    //put adjacent blocks to the current node on the open list
     cycles = 0;
-    calcAdjacent(currentNode);
-        
-    //calculate the f values of eachblock
-    //cycle through open list, finding new nodes to add
-    //repeat calculations until you find the end node
+    do{
+        if(cycles>=openList.length){
+            cycles=0;
+        }
+        currentNode=openList[cycles];
+        closedList.push(currentNode);
+        openList.splice(openList.indexOf(currentNode),1);
+        if(currentNode===end){
+            break;
+        }
+        //put adjacent blocks to the current node on the open list
+        calcAdjacent(currentNode);
+        //calculate the f values of eachblock
+        calcF();
+        //cycle through open list, finding new nodes to add
+        //repeat calculations until you find the end node
+        sortByF();
+    }while(openList.length>0);
     //go through the parent nodes of the successful path
+    var testNode = currentNode;
+    var path = [];
+    while(testNode!=start){
+        path.push(testNode);
+        testNode = nodes[testNode].parentNode;
+    }
+    path.reverse();
+    console.log("path found");
 }
 
 function calcAdjacent(currentNode){
@@ -131,11 +151,48 @@ function calcAdjacent(currentNode){
     }
 }
 
+function calcF(){
+    for(var i=0;i<openList.length;i++){
+        nodes[openList[i]].f=(nodes[openList[i]].g+nodes[openList[i]].h);
+    }    
+}
+
 function retNodeProps(nodePos){
     for(var i=0;i<nodes.length;i++){
         if(nodePos===nodes[i].position){
             return nodes[i];
         }
+    }
+}
+
+function sortByF(){
+    var sort = [];
+    var counter = 0;
+    for(var i =0;i<openList.length;i++){
+        sort.push(nodes[openList[i]].f);
+    }
+    sort.sort(function(a, b){return a-b});
+    var newOpenList=[];
+    for(var i=0;i<openList.length;i++){
+        for(var j=0; j<openList.length;i++){
+            if(nodes[openList[j]].f===sort[i]){
+                counter=0;
+                for(var k=0;k<newOpenList.length;i++){
+                    if(newOpenList[k]===sort[i]){
+                        break;
+                    } else {
+                        counter++;
+                    }
+                }
+                if(counter===(newOpenList.length-1)){
+                    newOpenList.push(sort[i]);
+                }
+            }
+        }
+    }
+    openList=[];
+    for(var i=0; i<openList.length; i++){
+        openList.push(newOpenList[i]);
     }
 }
 
@@ -169,3 +226,4 @@ function clear(){
 }
 
 draw();
+
