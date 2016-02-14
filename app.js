@@ -327,24 +327,42 @@ $(window).on("keypress",function(e){
             getAdjacent(pos);
         } else if((e.charCode==97)&&((charX==0)&&(charY==3))&&(thisRoom.leftDoor)){
             //go left room
-            transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
-            charX=6;
-            charY=3;
+            if(!currentRoom.leftKey){
+                transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
+                charX=6;
+                charY=3; 
+            }
         } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
             //go right room
-            transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
-            charX=0;
-            charY=3;
+            if(!currentRoom.rightKey){
+                transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
+                charX=0;
+                charY=3;
+            } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
+                var theIndex=0;
+                for(var i=0; i<inventory.length;i++){
+                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                           theIndex=i;
+                       }
+                }
+                inventory.splice(theIndex,1);
+                currentRoom.rightKey=false;
+                $(".selected").children().attr("src","resources/transparent.png");
+            }
         } else if((e.charCode==119)&&((charX==3)&&(charY==0))&&(thisRoom.topDoor)){
             //go up room
-            transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
-            charX=3;
-            charY=6;
+            if(!currentRoom.upKey){
+                transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
+                charX=3;
+                charY=6;
+            }
         } else if((e.charCode==115)&&((charX==3)&&(charY==6))&&(thisRoom.bottomDoor)){
             //go down room
-            transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
-            charX=3;
-            charY=0;
+            if(!currentRoom.downKey){
+                transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
+                charX=3;
+                charY=0;
+            }
         }
     }
     if((e.charCode==13)&&(enableDisable)){
@@ -431,7 +449,7 @@ function getAdjacent(position){
                 console.log(currentRoom[prop].textOnPickup);
                 displayHelpText(currentRoom[prop].textOnPickup);
             }
-            inventory.push(resource.invObject);
+            inventory.push(resource);
             
             $("#slot"+(inventory.length-1)).attr("src",currentRoom[prop].invObject.texture);
             currentRoom[prop] = floor;
@@ -441,7 +459,7 @@ function getAdjacent(position){
             if(currentRoom[prop].name=="key2"){
                 displayHelpText(currentRoom[prop].textOnPickup);
             } else {
-                displayHelpText("Oh no, I don't have enough room for this!");
+                displayHelpText("Oh no, I don't have enough room for this! I better look for a backpack.");
             }
         }
     } else {
@@ -527,3 +545,12 @@ function setResources(looped){
     $("#slot"+((inventorySpace-3)+looped)).attr("src","resources/transparent.png");
     $("#slot"+((inventorySpace-3)+looped)).show(500);
 }
+
+$(".itemHolder").on("click",function(){
+    $(".itemHolder").each(function(){
+       $(this).removeClass("selected"); 
+    });
+    $(this).addClass("selected");
+    console.log("clicked");
+});
+

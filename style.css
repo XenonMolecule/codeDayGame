@@ -32,7 +32,6 @@
 }
 
 .itemHolder{
-    border-radius:50%;
     height:80px;
     width:80px;
     outline-width:2px;
@@ -72,4 +71,8 @@ ul{
     position:absolute;
     margin-top:-80px;
     margin-left:120px;
+}
+
+.selected{
+    background-color:#101515;
 }
