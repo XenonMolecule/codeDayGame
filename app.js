@@ -10,6 +10,11 @@ var nodes = [];
 var currentRoom = firstRoom;
 var charX = 3;
 var charY = 6;
+var debugData;
+var canMove = true;
+var inventory = [];
+var inventorySpace = 1;
+//var love???
 
 $(window).on("resize",function(){
     $("#game").attr("width",700);
@@ -253,7 +258,24 @@ function drawRoom(room){
         }
     }
     //var love
-    
+    for(var i = 0; i<rooms.length; i++){
+        if((currentRoom.coordX-1===rooms[i].coordX)&&(currentRoom.coordY===rooms[i].coordY)){
+            var img = document.getElementById("leftdoor");
+            context.drawImage(img,0,300,100,100);
+        }
+        if((currentRoom.coordX+1===rooms[i].coordX)&&(currentRoom.coordY===rooms[i].coordY)){
+            var img = document.getElementById("rightdoor");
+            context.drawImage(img,600,300,100,100);
+        }
+        if((currentRoom.coordY-1===rooms[i].coordY)&&(currentRoom.coordX===rooms[i].coordX)){
+            var img = document.getElementById("topdoor");
+            context.drawImage(img,300,0,100,100);
+        }
+        if((currentRoom.coordY+1===rooms[i].coordY)&&(currentRoom.coordX===rooms[i].coordX)){
+            var img = document.getElementById("downdoor");
+            context.drawImage(img,300,600,100,100);
+        }
+    }
 }
 //function to clear the canvas
 function clear(){
@@ -266,4 +288,90 @@ draw();
 function drawCharacter(){
     var img = document.getElementById("character");
     context.drawImage(img,(charX*100),(charY*100),100,100);
+}
+
+$(window).on("keypress",function(e){
+    if(canMove ==true){
+        debugData = e;
+        var pos = charX+(charY*7);
+        if((e.charCode==97)&&(charX>0)&&(getPassability((pos-1)))){
+            glideX(charX,charX-1);
+        } else if((e.charCode===100)&&(charX<6)&&(getPassability(pos+1))){
+            glideX(charX,charX+1);
+        } else if((e.charCode==119)&&(charY>0)&&(getPassability((pos-7)))){
+            glideY(charY,charY-1);
+        } else if((e.charCode==115)&&(charY<6)&&(getPassability((pos+7)))){
+            glideY(charY,(charY+1));
+        } else if((e.charCode==13)){
+            getAdjacent(pos);
+        }
+    }
+});
+
+function glideX(currentPos,newPos){
+    canMove = false;
+    var dist = newPos-currentPos;
+    dist=dist/25;
+    charX+=dist;
+    charX*=1000;
+    charX = Math.round(charX);
+    charX = charX/1000;
+    if(charX!=newPos){
+        setTimeout(glideX,1,currentPos,newPos);
+    }else{
+        canMove = true;
+    }
+}
+
+function glideY(currentPos,newPos){
+    canMove=false;
+    var dist = newPos-currentPos;
+    dist=dist/25;
+    charY+=dist;
+    charY*=1000;
+    charY = Math.round(charY);
+    charY = charY/1000;
+    if(charY!=newPos){
+        setTimeout(glideY,1,currentPos,newPos);
+    }else{
+        canMove = true;
+    }
+}
+
+function getPassability(block){
+    var prop = "block"+block;
+    return currentRoom[prop].passable;
+}
+
+function getGrabbability(block){
+    var prop = "block"+block;
+    return currentRoom[prop].grabbable;
+}
+
+function getAdjacent(position){
+    var above = position-7;
+    var left = position-1;
+    var right = position+1;
+    var below = position+7;
+    var resource;
+    var prop;
+    if(getGrabbability(above)){
+        prop = "block"+above;
+        resource = currentRoom[prop];
+    } else if(getGrabbability(left)){
+        prop = "block"+left;
+        resource = currentRoom[prop];
+    } else if(getGrabbability(right)){
+        prop = "block"+right;
+        resource = currentRoom[prop];
+    } else if(getGrabbability(below)){
+        prop = "block"+right;
+        resource = currentRoom[prop];
+    }
+    if(inventory.length<inventorySpace){
+        inventory.push(resource);
+        currentRoom[prop] = floor;
+    } else {
+        console.log("inventoryFull");
+    }
 }
