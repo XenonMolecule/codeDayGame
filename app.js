@@ -254,6 +254,7 @@ function draw(){
     drawRoom(currentRoom);
     drawCharacter();
     setTimeout(draw,(1000/16));
+    drawInventory();
     //temporaryCode
     if((currentRoom.coordX===4)&&(currentRoom.coordY===6)){
         document.location = "https://sethtrei.github.io/tero/body.html" 
@@ -368,6 +369,14 @@ $(window).on("keypress",function(e){
                        }
                 }
                 inventory.splice(theIndex,1);
+                var newInv = [];
+                $(".itemHolder").children().each(function(){
+                    $(this).attr("src","resources/transparent.png");
+                });
+                for(var i=0;i<inventory.length;i++){
+                    newInv[i]=inventory[i];
+                    $("#slot"+i).attr("src",inventory[i].texture);
+                }
                 currentRoom.rightKey=false;
                 $(".selected").children().attr("src","resources/transparent.png");
             }
@@ -385,6 +394,14 @@ $(window).on("keypress",function(e){
                        }
                 }
                 inventory.splice(theIndex,1);
+                var newInv = [];
+                $(".itemHolder").children().each(function(){
+                    $(this).attr("src","resources/transparent.png");
+                });
+                for(var i=0;i<inventory.length;i++){
+                    newInv[i]=inventory[i];
+                    $("#slot"+i).attr("src",inventory[i].texture);
+                }
                 currentRoom.upKey=false;
                 $(".selected").children().attr("src","resources/transparent.png");
             }
@@ -402,6 +419,14 @@ $(window).on("keypress",function(e){
                        }
                 }
                 inventory.splice(theIndex,1);
+                var newInv = [];
+                $(".itemHolder").children().each(function(){
+                    $(this).attr("src","resources/transparent.png");
+                });
+                for(var i=0;i<inventory.length;i++){
+                    newInv[i]=inventory[i];
+                    $("#slot"+i).attr("src",inventory[i].texture);
+                }
                 currentRoom.downKey=false;
                 $(".selected").children().attr("src","resources/transparent.png");
             }
@@ -596,3 +621,11 @@ $(".itemHolder").on("click",function(){
     console.log("clicked");
 });
 
+function drawInventory(){
+    for(var i = 0; i < inventory.length; i++){
+        $("#slot"+i).attr("src",inventory[i].texture);
+    }
+    for(var i = inventorySpace; i<8; i++){
+        $("#slot"+i).attr("src","resources/lock.png");
+    }
+}
