@@ -501,7 +501,7 @@ function getAdjacent(position){
         prop = "block"+right;
         resource = currentRoom[prop].invObject;
     } else if(getGrabbability(below)){
-        prop = "block"+right;
+        prop = "block"+below;
         resource = currentRoom[prop].invObject;
     }
     if(currentRoom[prop].name!="backpack"){
