@@ -1,4 +1,4 @@
-# [Ter0: The Awakening](index.html)
+# [Ter0: The Awakening](https://xenonmolecule.github.io/codeDayGame/)
 
 ## Inspiration
 
