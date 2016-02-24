@@ -337,13 +337,17 @@ $(window).on("keypress",function(e){
                 charX=6;
                 charY=3; 
             }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
-                var theIndex=0;
+                var theIndex=-1;
+                var selectedTexture = $(".selected").children().attr("src");
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
                            theIndex=i;
                        }
                 }
-                inventory.splice(theIndex,1);
+                console.log(theIndex);
+                if(theIndex>=0){
+                    inventory.splice(theIndex,1);
+                }
                 var newInv = [];
                 $(".itemHolder").children().each(function(){
                     $(this).attr("src","resources/transparent.png");
@@ -352,7 +356,7 @@ $(window).on("keypress",function(e){
                     newInv[i]=inventory[i];
                     $("#slot"+i).attr("src",inventory[i].texture);
                 }
-                currentRoom.leftKey=false;
+                currentRoom.leftKey = false;
                 $(".selected").children().attr("src","resources/transparent.png");
             }
         } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
@@ -362,13 +366,16 @@ $(window).on("keypress",function(e){
                 charX=0;
                 charY=3;
             } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
-                var theIndex=0;
+                var selectedTexture = $(".selected").children().attr("src");
+                var theIndex=-1;
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
                            theIndex=i;
                        }
                 }
-                inventory.splice(theIndex,1);
+                if(theIndex>=0){
+                    inventory.splice(theIndex,1);
+                }
                 var newInv = [];
                 $(".itemHolder").children().each(function(){
                     $(this).attr("src","resources/transparent.png");
@@ -387,13 +394,16 @@ $(window).on("keypress",function(e){
                 charX=3;
                 charY=6;
             } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
-                var theIndex=0;
+                var selectedTexture = $(".selected").children().attr("src");
+                var theIndex=-1;
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
                            theIndex=i;
                        }
                 }
-                inventory.splice(theIndex,1);
+                if(theIndex>=0){
+                    inventory.splice(theIndex,1);
+                }
                 var newInv = [];
                 $(".itemHolder").children().each(function(){
                     $(this).attr("src","resources/transparent.png");
@@ -412,13 +422,15 @@ $(window).on("keypress",function(e){
                 charX=3;
                 charY=0;
             }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
-                var theIndex=0;
+                var theIndex=-1;
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(key.texture)||(inventory[i].texture)==(key2.texture)){
+                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
                            theIndex=i;
                        }
                 }
-                inventory.splice(theIndex,1);
+                if(theIndex>=0){
+                    inventory.splice(theIndex,1);
+                }
                 var newInv = [];
                 $(".itemHolder").children().each(function(){
                     $(this).attr("src","resources/transparent.png");
