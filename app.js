@@ -339,12 +339,18 @@ $(window).on("keypress",function(e){
             }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var theIndex=-1;
                 var selectedTexture = $(".selected").children().attr("src");
+                var selectedItem = getItemName(selectedTexture);
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
-                           theIndex=i;
-                       }
+                        if(selectedItem === "key"){
+                            if((inventory[i].texture)==(keyInv.texture)){
+                                theIndex=i;
+                            }
+                        } else if(selectedItem === "key2"){
+                            if((inventory[i].texture)==(key2Inv.texture)){
+                                theIndex=i;
+                            }
+                        }
                 }
-                console.log(theIndex);
                 if(theIndex>=0){
                     inventory.splice(theIndex,1);
                 }
@@ -368,10 +374,17 @@ $(window).on("keypress",function(e){
             } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var selectedTexture = $(".selected").children().attr("src");
                 var theIndex=-1;
+                var selectedItem = getItemName(selectedTexture);
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
-                           theIndex=i;
-                       }
+                       if(selectedItem === "key"){
+                            if((inventory[i].texture)==(keyInv.texture)){
+                                theIndex=i;
+                            }
+                        } else if(selectedItem === "key2"){
+                            if((inventory[i].texture)==(key2Inv.texture)){
+                                theIndex=i;
+                            }
+                        }
                 }
                 if(theIndex>=0){
                     inventory.splice(theIndex,1);
@@ -396,10 +409,17 @@ $(window).on("keypress",function(e){
             } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var selectedTexture = $(".selected").children().attr("src");
                 var theIndex=-1;
+                var selectedItem = getItemName(selectedTexture);
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
-                           theIndex=i;
-                       }
+                       if(selectedItem === "key"){
+                            if((inventory[i].texture)==(keyInv.texture)){
+                                theIndex=i;
+                            }
+                        } else if(selectedItem === "key2"){
+                            if((inventory[i].texture)==(key2Inv.texture)){
+                                theIndex=i;
+                            }
+                        }
                 }
                 if(theIndex>=0){
                     inventory.splice(theIndex,1);
@@ -423,10 +443,18 @@ $(window).on("keypress",function(e){
                 charY=0;
             }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var theIndex=-1;
+                var selectedTexture = $(".selected").children().attr("src");
+                var selectedItem = getItemName(selectedTexture);
                 for(var i=0; i<inventory.length;i++){
-                       if((inventory[i].texture)==(keyInv.texture)||(inventory[i].texture)==(key2Inv.texture)){
-                           theIndex=i;
-                       }
+                       if(selectedItem === "key"){
+                            if((inventory[i].texture)==(keyInv.texture)){
+                                theIndex=i;
+                            }
+                        } else if(selectedItem === "key2"){
+                            if((inventory[i].texture)==(key2Inv.texture)){
+                                theIndex=i;
+                            }
+                        }
                 }
                 if(theIndex>=0){
                     inventory.splice(theIndex,1);
@@ -640,4 +668,13 @@ function drawInventory(){
     for(var i = inventorySpace; i<8; i++){
         $("#slot"+i).attr("src","resources/lock.png");
     }
+}
+
+function getItemName(texture){
+    for(var i = 0; i < inventoryItems.length; i ++){
+        if(texture === inventoryItems[i].texture){
+            return inventoryItems[i].name;
+        }
+    }
+    return null;
 }
