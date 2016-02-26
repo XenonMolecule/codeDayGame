@@ -41,6 +41,8 @@ $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
 //Task: Click Responsivness
 //call function on click
 $("#game").on("click",function(e){
+    var x;
+    var y;
     //figure out the x position block
     x = e.offsetX;
     y = e.offsetY;
