@@ -656,11 +656,31 @@ function setResources(looped){
 }
 
 $(".itemHolder").on("click",function(){
+    var previouslySelectedTexture = $(".selected img").attr("src");
+    var previouslySelected = getItemName(previouslySelectedTexture);
+    var on = $(this).hasClass("selected");
     $(".itemHolder").each(function(){
        $(this).removeClass("selected"); 
     });
-    $(this).addClass("selected");
+    if(!on){
+        $(this).addClass("selected");
+    }
     console.log("clicked");
+    var selectedItemTexture = $(".selected img").attr("src");
+    var selectedItemName = getItemName(selectedItemTexture);
+    var craftedItem = 0;
+    for(var z = 0; z < inventoryItems.length; z++){
+        for(var i = 0; i < inventoryItems[z].crafting.length; i++){
+            if(inventoryItems[z].crafting[i]===selectedItemName){
+                removeFromInventory(previouslySelected);
+                removeFromInventory(selectedItemName);
+                craftedItem = inventoryItems[z].crafting[i][1];
+                inventory.push(inventoryItems[z]);
+                break;
+            }
+        }
+    }
+    
 });
 
 function drawInventory(){
@@ -676,6 +696,26 @@ function getItemName(texture){
     for(var i = 0; i < inventoryItems.length; i ++){
         if(texture === inventoryItems[i].texture){
             return inventoryItems[i].name;
+        }
+    }
+    return null;
+}
+
+function removeFromInventory(name){
+    var theIndex = -1;
+    for(var i=0; i<inventory.length;i++){
+        if(name === inventory[i]){
+            theIndex=i;
+        }
+    }
+    if(theIndex>=0){
+        inventory.splice(theIndex,1);
+    }
+}
+function nameToTexture(name){
+    for(var i = 0; i < inventoryItems.length; i ++){
+        if(name === inventoryItems[i].name){
+            return inventoryItems[i].texture;
         }
     }
     return null;

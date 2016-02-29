@@ -11,4 +11,4 @@ var keyInv = new invObject("resources/key.png",[[]],"key");
 var key2Inv = new invObject("resources/key2.png",[[]],"key2");
 var stickInv = new invObject("resources/stick.png",[["stringInv","fishingRodInv"]],"stick");
 var stringInv = new invObject("resources/string.png",[["stickInv","fishingRodInv"]],"string");
-var fishingRodInv = new invObject("resources/fishing rod.png",[[]],"fishingRod");
+var fishingRodInv = new invObject("resources/fishingrod.png",[[]],"fishingRod");
