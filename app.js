@@ -658,6 +658,7 @@ function setResources(looped){
 $(".itemHolder").on("click",function(){
     var previouslySelectedTexture = $(".selected img").attr("src");
     var previouslySelected = getItemName(previouslySelectedTexture);
+    var previouslySelectedWithInv = previouslySelected + "Inv";
     var on = $(this).hasClass("selected");
     $(".itemHolder").each(function(){
        $(this).removeClass("selected"); 
@@ -665,17 +666,15 @@ $(".itemHolder").on("click",function(){
     if(!on){
         $(this).addClass("selected");
     }
-    console.log("clicked");
     var selectedItemTexture = $(".selected img").attr("src");
     var selectedItemName = getItemName(selectedItemTexture);
-    var craftedItem = 0;
+    var selectedItemNameWithInv = selectedItemName+"Inv";
     for(var z = 0; z < inventoryItems.length; z++){
         for(var i = 0; i < inventoryItems[z].crafting.length; i++){
-            if(inventoryItems[z].crafting[i]===selectedItemName){
-                removeFromInventory(previouslySelected);
-                removeFromInventory(selectedItemName);
-                craftedItem = inventoryItems[z].crafting[i][1];
-                inventory.push(inventoryItems[z]);
+            if((inventoryItems[z].crafting[i][0]===previouslySelectedWithInv)&&(inventoryItems[z].name===selectedItemName)){
+                removeFromInventory(nameToObject(previouslySelected));
+                removeFromInventory(nameToObject(selectedItemName));
+                inventory.push(nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0]));
                 break;
             }
         }
@@ -684,8 +683,12 @@ $(".itemHolder").on("click",function(){
 });
 
 function drawInventory(){
-    for(var i = 0; i < inventory.length; i++){
-        $("#slot"+i).attr("src",inventory[i].texture);
+    for(var i = 0; i < inventorySpace; i++){
+        if(i<inventory.length){
+            $("#slot"+i).attr("src",inventory[i].texture);
+        } else {
+            $("#slot"+i).attr("src","resources/transparent.png");
+        }
     }
     for(var i = inventorySpace; i<8; i++){
         $("#slot"+i).attr("src","resources/lock.png");
@@ -719,4 +722,12 @@ function nameToTexture(name){
         }
     }
     return null;
+}
+
+function nameToObject(name){
+    for(var i=0; i<inventoryItems.length;i++){
+        if(name===inventoryItems[i].name){
+            return inventoryItems[i];
+        }
+    }
 }
