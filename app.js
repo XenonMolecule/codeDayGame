@@ -366,6 +366,7 @@ $(window).on("keypress",function(e){
                 }
                 currentRoom.leftKey = false;
                 $(".selected").children().attr("src","resources/transparent.png");
+                $(".selected").removeClass("selected");
             }
         } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
             //go right room
@@ -401,6 +402,7 @@ $(window).on("keypress",function(e){
                 }
                 currentRoom.rightKey=false;
                 $(".selected").children().attr("src","resources/transparent.png");
+                $(".selected").removeClass("selected");
             }
         } else if((e.charCode==119)&&((charX==3)&&(charY==0))&&(thisRoom.topDoor)){
             //go up room
@@ -436,6 +438,7 @@ $(window).on("keypress",function(e){
                 }
                 currentRoom.upKey=false;
                 $(".selected").children().attr("src","resources/transparent.png");
+                $(".selected").removeClass("selected");
             }
         } else if((e.charCode==115)&&((charX==3)&&(charY==6))&&(thisRoom.bottomDoor)){
             //go down room
@@ -471,6 +474,7 @@ $(window).on("keypress",function(e){
                 }
                 currentRoom.downKey=false;
                 $(".selected").children().attr("src","resources/transparent.png");
+                $(".selected").removeClass("selected");
             }
         }
     }
@@ -675,6 +679,7 @@ $(".itemHolder").on("click",function(){
                 removeFromInventory(nameToObject(previouslySelected));
                 removeFromInventory(nameToObject(selectedItemName));
                 inventory.push(nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0]));
+                $(".selected").removeClass("selected");
                 break;
             }
         }
@@ -715,6 +720,7 @@ function removeFromInventory(name){
         inventory.splice(theIndex,1);
     }
 }
+
 function nameToTexture(name){
     for(var i = 0; i < inventoryItems.length; i ++){
         if(name === inventoryItems[i].name){

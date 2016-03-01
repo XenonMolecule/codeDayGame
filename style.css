@@ -7,13 +7,14 @@
 
 #game{
     background-color:#000;
-    
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 #sidebar{
     height: 700px;
     width: 100px;
     background-color: black;
     position:absolute;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 #sidebarDiv{
@@ -22,6 +23,7 @@
     background-color:#001a4d;
     position:absolute;
     z-index:100;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 .invItem{
@@ -29,6 +31,7 @@
     width:60px;
     margin-left:10px;
     margin-top:10px;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 .itemHolder{
@@ -39,10 +42,12 @@
     outline-style:solid;
     margin-left:-25px;
     background-color:black;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 ul{
     list-style:none;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 .rpgText{
@@ -51,17 +56,20 @@ ul{
     height:200px;
     width:700px;
     z-index:2000;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 .face{
     margin-top:50px;
     margin-left:10px;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 .textSeparator{
     margin-top:-10px;
     height:10px;
     background-color:#001a4d;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 #textRPG{
@@ -71,8 +79,10 @@ ul{
     position:absolute;
     margin-top:-80px;
     margin-left:120px;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
 
 .selected{
     background-color:#212c2c;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=40058);
 }
