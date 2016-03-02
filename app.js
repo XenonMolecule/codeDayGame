@@ -257,10 +257,6 @@ function draw(){
     drawCharacter();
     setTimeout(draw,(1000/16));
     drawInventory();
-    //temporaryCode
-    if((currentRoom.coordX===4)&&(currentRoom.coordY===6)){
-        document.location = "https://sethtrei.github.io/tero/body.html" 
-    }
 }
 
 //function that takes in room
@@ -680,6 +676,7 @@ $(".itemHolder").on("click",function(){
                 removeFromInventory(nameToObject(selectedItemName));
                 inventory.push(nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0]));
                 $(".selected").removeClass("selected");
+                displayHelpText((nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0])).onCraftText);
                 break;
             }
         }
