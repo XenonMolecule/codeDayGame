@@ -26,9 +26,11 @@ var stageOfTutorial=0;
 $(window).on("resize",function(){
     $("#game").attr("width",700);
     $("#game").attr("height",700);
-    setTimeout($("#game").css("margin-left",((window.innerWidth/2)-350)),100);
+    setTimeout($("#game").css("margin-left",((window.innerWidth/2)-400)),100);
     $("#sidebar").css("margin-left",(window.innerWidth/2)+300);
     $("#sidebarDiv").css("margin-left",(window.innerWidth/2)+300);
+    $(".rpgText").css("margin-top",500);
+    $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
     console.log(((window.innerWidth/2)-400));
 });
 
@@ -52,6 +54,7 @@ $("#game").on("click",function(e){
     y*=7;
     //calculate the actual block
     console.log(x+y);
+    clickedOn(x+y);
 });
 
 //Task: Pathfinding
@@ -734,3 +737,35 @@ function nameToObject(name){
         }
     }
 }
+
+function clickedOn(block){
+    var blockName = "block"+block;
+    if(currentRoom[blockName].onClickFunction!=undefined){
+        currentRoom[blockName].onClickFunction.call(currentRoom[blockName]);
+    }
+}
+
+function makeLeverDropWalls(){
+    if($(".selected img").attr("src") === "resources/fishingrod.png"){
+        leverRoom.block31 = floor;
+        setTimeout(removeBlock,500,32,leverRoom);
+        setTimeout(removeBlock,500,30,leverRoom);
+        setTimeout(removeBlock,1000,29,leverRoom);
+        setTimeout(removeBlock,1000,33,leverRoom);
+        lever.texture = "switchDown";
+        lever.upPos = false;
+        removeFromInventory(fishingRodInv);
+        $(".selected").removeClass("selected");
+        displayHelpText("Wow, that is super nerf! I made it through");
+    }
+}
+
+function removeBlock(block,room){
+    if(room!=undefined){
+        room["block"+block] = floor;
+    } else {
+        currentRoom["block"+block] = floor;
+    }
+}
+lever.onClickFunction = makeLeverDropWalls;
+
