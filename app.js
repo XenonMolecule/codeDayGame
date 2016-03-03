@@ -20,6 +20,22 @@ var thisRoom = {
 var displayText="";
 var enableDisable=false;
 var stageOfTutorial=0;
+var craftingAnimCanvas = "<canvas id='craftCanvas' height = '700' width = '700'></canvas>";
+var $craftCanvas = $(craftingAnimCanvas);
+$("#game").after($craftCanvas);
+var craftContext = $craftCanvas[0].getContext("2d");
+var craftingRect1 = {
+    x:-349,
+    y:175,
+    image:"DIS IS A GLITCH MON",
+    imageToCraft:"HOI I'M A GLITCH"
+}
+var craftingRect2 = {
+    x:699,
+    y:175,
+    image:"YOU'RE GONNA HAVE A BAD TIME, WITH THIS GLITCH"
+}
+$craftCanvas.prop("hidden",true);
 
 //var love???
 
@@ -39,6 +55,8 @@ $("#sidebar").css("margin-left",(window.innerWidth/2)+300);
 $("#sidebarDiv").css("margin-left",(window.innerWidth/2)+300);
 $(".rpgText").css("margin-top",500);
 $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
+$("#craftCanvas").css("margin-left","-700px");
+$("#craftCanvas").css("margin-top","0px");
 
 //Task: Click Responsivness
 //call function on click
@@ -677,8 +695,15 @@ $(".itemHolder").on("click",function(){
             if((inventoryItems[z].crafting[i][0]===previouslySelectedWithInv)&&(inventoryItems[z].name===selectedItemName)){
                 removeFromInventory(nameToObject(previouslySelected));
                 removeFromInventory(nameToObject(selectedItemName));
+                var craftedItemObj = nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0]);
                 inventory.push(nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0]));
                 $(".selected").removeClass("selected");
+                continueCraftAnim = true;
+                craftingRect1.image = (nameToObject(selectedItemName)).craftingTexture;
+                craftingRect1.imageToCraft = craftedItemObj.craftingTexture;
+                craftingRect2.image = (nameToObject(previouslySelected)).craftingTexture;
+                craftingAnimation();
+                setTimeout(function(){continueCraftAnim=false},2000);
                 displayHelpText((nameToObject((inventoryItems[z].crafting[i][1]).split("Inv")[0])).onCraftText);
                 break;
             }
@@ -769,3 +794,64 @@ function removeBlock(block,room){
 }
 lever.onClickFunction = makeLeverDropWalls;
 
+var continueCraftAnim = true;
+
+function craftingAnimation(){
+    craftContext.clearRect(0, 0, $craftCanvas.attr("width"), $craftCanvas.attr("height"));
+    if(continueCraftAnim){
+        $craftCanvas.prop("hidden",false);
+        updateCraftingFrame();
+        craftContext.beginPath();
+        craftContext.rect(craftingRect1.x,craftingRect1.y,350,350);
+        craftContext.rect(craftingRect2.x,craftingRect2.y,350,350);
+        craftContext.fillStyle = "rgb(255,255,255)";
+        craftContext.fill();
+        var img = document.getElementById(craftingRect1.imageToCraft);
+        var img1 = document.getElementById(craftingRect1.image);
+        var img2 = document.getElementById(craftingRect2.image);
+        if(craftingRect1.x<175){
+            craftContext.drawImage(img1,(craftingRect1.x+88),(craftingRect1.y+88),175,175);
+            craftContext.drawImage(img2,(craftingRect2.x+88),(craftingRect2.y+88),175,175);
+        } else {
+            craftContext.drawImage(img,(craftingRect1.x+88),(craftingRect1.y+88),175,175);
+        }
+        craftContext.closePath();
+        setTimeout(craftingAnimation,1);
+    } else {
+       resetCraftingAnimation();
+    }
+}
+
+function updateCraftingFrame(){
+    if(craftingRect1.x<175){
+        craftingRect1.x+=10;
+        craftingRect2.x-=10;
+    }
+}
+
+/*
+
+var img = document.getElementById((room[prop].texture));
+            var x = (cycles%7);
+            var y = ((cycles-cycles%7)/7);
+            context.drawImage(img,(x*100),(y*100),100,100);
+
+*/
+
+function resetCraftingAnimation(){
+    setTimeout(function(){continueCraftAnim = true},100);
+    craftingRect1.x = -349;
+    craftingRect2.x = 699;
+    $craftCanvas.prop("hidden",true);
+}
+
+function invToResource(inventoryObject){
+    for(var i = 0; i < resourceList.length; i++){
+        if(resourceList[i].invObject!=undefined){
+            if(inventoryObject === resourceList[i].invObject){
+                return resourceList[i];
+            }
+        }
+    }
+    return false;
+}

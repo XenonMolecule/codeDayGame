@@ -83,3 +83,9 @@ ul{
 .selected{
     background-color:#212c2c;
 }
+
+#craftCanvas{
+    background-color: rgba(0,0,0,0.6);
+    position:absolute;
+    z-index:3000;
+}
