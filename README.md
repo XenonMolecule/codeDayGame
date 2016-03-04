@@ -22,4 +22,6 @@ We did the entire thing in the canvas.
 
 
 ## What's next for Ter0: The Awakening
-More rooms, crafting and enemies.
+[] More Rooms
+[X] Crafting
+[] Enemies
