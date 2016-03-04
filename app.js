@@ -36,7 +36,10 @@ var craftingRect2 = {
     image:"YOU'RE GONNA HAVE A BAD TIME, WITH THIS GLITCH"
 }
 $craftCanvas.prop("hidden",true);
-
+var craftHelpGiven = false;
+var displayQueue = [];
+var globalTextAccess = "";
+var globalTextPositionAccess = 0;
 //var love???
 
 $(window).on("resize",function(){
@@ -278,6 +281,7 @@ function draw(){
     drawCharacter();
     setTimeout(draw,(1000/16));
     drawInventory();
+    miscellaneousFunctions();
 }
 
 //function that takes in room
@@ -354,7 +358,11 @@ $(window).on("keypress",function(e){
             if(!currentRoom.leftKey){
                 transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
                 charX=6;
-                charY=3; 
+                charY=3;
+                if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
+                    displayHelpText(currentRoom.textOnFirstEntry);
+                }
+                currentRoom.firstEntry = false;
             }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var theIndex=-1;
                 var selectedTexture = $(".selected").children().attr("src");
@@ -391,6 +399,10 @@ $(window).on("keypress",function(e){
                 transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
                 charX=0;
                 charY=3;
+                if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
+                    displayHelpText(currentRoom.textOnFirstEntry);
+                }
+                currentRoom.firstEntry = false;
             } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var selectedTexture = $(".selected").children().attr("src");
                 var theIndex=-1;
@@ -427,6 +439,10 @@ $(window).on("keypress",function(e){
                 transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
                 charX=3;
                 charY=6;
+                if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
+                    displayHelpText(currentRoom.textOnFirstEntry);
+                }
+                currentRoom.firstEntry = false;
             } else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var selectedTexture = $(".selected").children().attr("src");
                 var theIndex=-1;
@@ -463,6 +479,10 @@ $(window).on("keypress",function(e){
                 transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
                 charX=3;
                 charY=0;
+                if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
+                    displayHelpText(currentRoom.textOnFirstEntry);
+                }
+                currentRoom.firstEntry = false;
             }  else if(($(".selected").children().attr("src")==="resources/key.png")||($(".selected").children().attr("src")==="resources/key2.png")){
                 var theIndex=-1;
                 var selectedTexture = $(".selected").children().attr("src");
@@ -496,14 +516,16 @@ $(window).on("keypress",function(e){
         }
     }
     if((e.charCode==13)&&(enableDisable)){
-            console.log("disappear");
-            enableDisable =false;
-            $("#textRPG").text("");
-            displayText = "";
-            $(".rpgText").attr("hidden",true);
-            canMove = true;
-            stageOfTutorial++;
-        }
+        console.log("disappear");
+        enableDisable =false;
+        $("#textRPG").text("");
+        displayText = "";
+        $(".rpgText").attr("hidden",true);
+        canMove = true;
+        stageOfTutorial++;
+    } else if((e.charCode==122)&&(displayText!="")){
+        globalTextPositionAccess = globalTextAccess.length-1;
+    }
 });
 
 function glideX(currentPos,newPos){
@@ -619,11 +641,21 @@ function transferRooms(xPos,yPos){
 }
 
 function funText(textString, position){
+    if(globalTextPositionAccess>position){
+        position = globalTextPositionAccess;
+    } else {
+        globalTextPositionAccess = position;
+    }
     textArray=[];
     canMove=false;
-    console.log(textString);
+    if(displayQueue.length>0){
+        if(searchArray(displayQueue,textString)){
+            displayQueue.splice(displayQueue.indexOf(textString),1);
+        }
+    }
     var textArray = textString.split("");
-    displayText=displayText+textArray[position];
+    //displayText=displayText+textArray[position];
+    displayText = textString.slice(0,position+1);
     $("#textRPG").text(displayText);
     if(position<(textArray.length-1)){
         setTimeout(funText,40,textString,(position+1));
@@ -634,10 +666,26 @@ function funText(textString, position){
 
 function displayHelpText(string){
     $(".rpgText").attr("hidden",false);
-    displayText="";
-    funText(string,0);
-    console.log(string);
+    if(displayText===""){
+        if(displayQueue.length>0){
+            globalTextAccess = displayQueue[0];
+            globalTextPositionAccess = 0;
+            displayText="";
+            funText(displayQueue[0],0);
+        } else {
+            globalTextAccess = string;
+            globalTextPositionAccess = 0;
+            displayText="";
+            funText(string,0);
+        }
+    } else {
+        if(!searchArray(displayQueue)){
+            displayQueue.push(string);
+        }
+        setTimeout(displayHelpText, 500, displayQueue[0]);
+    }
 }
+
 function tutorial(run,run1,run2,run3){
     if(run){
         if(run3){
@@ -829,15 +877,6 @@ function updateCraftingFrame(){
     }
 }
 
-/*
-
-var img = document.getElementById((room[prop].texture));
-            var x = (cycles%7);
-            var y = ((cycles-cycles%7)/7);
-            context.drawImage(img,(x*100),(y*100),100,100);
-
-*/
-
 function resetCraftingAnimation(){
     setTimeout(function(){continueCraftAnim = true},100);
     craftingRect1.x = -349;
@@ -854,4 +893,30 @@ function invToResource(inventoryObject){
         }
     }
     return false;
+}
+
+function inventoryContains(item){
+    if(typeof item === "string"){
+        item = nameToObject(item);
+    } else if(typeof item != "object"){
+        console.log("You trying to glitch the game?")
+        return false;
+    }
+    for(var i = 0; i < inventory.length; i++){
+        if(item === inventory[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
+function miscellaneousFunctions(){
+    if(!(craftHelpGiven)&&inventoryContains(stringInv)&&inventoryContains(stickInv)){
+        craftHelpGiven = true;
+        displayHelpText("Oh look at this!  I bet I could combine this stick and string by clicking on one then the other in my inventory!");
+    }
+}
+
+function searchArray(array, content){
+    return(array.indexOf(content)!=-1);
 }
