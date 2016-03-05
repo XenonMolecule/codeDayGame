@@ -665,6 +665,7 @@ function funText(textString, position){
 }
 
 function displayHelpText(string){
+    var thingsToSay = string.split("*N");
     $(".rpgText").attr("hidden",false);
     if(displayText===""){
         if(displayQueue.length>0){
@@ -673,16 +674,23 @@ function displayHelpText(string){
             displayText="";
             funText(displayQueue[0],0);
         } else {
-            globalTextAccess = string;
+            globalTextAccess = thingsToSay[0];
             globalTextPositionAccess = 0;
             displayText="";
-            funText(string,0);
+            funText(thingsToSay[0],0);
+            for(var i = 1; i < thingsToSay.length; i++){
+                displayQueue.push(thingsToSay[i]);
+            }
         }
     } else {
-        if(!searchArray(displayQueue)){
-            displayQueue.push(string);
+        for(var i = 0; i < thingsToSay.length; i++){
+            if(!searchArray(displayQueue, thingsToSay[i])){
+                displayQueue.push(thingsToSay[i]);
+            }
         }
-        setTimeout(displayHelpText, 500, displayQueue[0]);
+    }
+    if(displayQueue.length>0){
+        setTimeout(displayHelpText, 100, displayQueue[0]);
     }
 }
 
