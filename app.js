@@ -358,9 +358,9 @@ $(window).on("keypress",function(e){
         } else if((e.charCode==97)&&((charX==0)&&(charY==3))&&(thisRoom.leftDoor)){
             //go left room
             if(!currentRoom.leftKey){
-                transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
                 charX=6;
                 charY=3;
+                transferRooms((currentRoom.coordX)-1,(currentRoom.coordY));
                 if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
                     displayHelpText(currentRoom.textOnFirstEntry);
                 }
@@ -398,9 +398,9 @@ $(window).on("keypress",function(e){
         } else if((e.charCode==100)&&((charX==6)&&(charY==3))&&(thisRoom.rightDoor)){
             //go right room
             if(!currentRoom.rightKey){
-                transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
                 charX=0;
                 charY=3;
+                transferRooms((currentRoom.coordX)+1,(currentRoom.coordY));
                 if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
                     displayHelpText(currentRoom.textOnFirstEntry);
                 }
@@ -438,9 +438,9 @@ $(window).on("keypress",function(e){
         } else if((e.charCode==119)&&((charX==3)&&(charY==0))&&(thisRoom.topDoor)){
             //go up room
             if(!currentRoom.upKey){
-                transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
                 charX=3;
                 charY=6;
+                transferRooms((currentRoom.coordX),(currentRoom.coordY)-1);
                 if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
                     displayHelpText(currentRoom.textOnFirstEntry);
                 }
@@ -478,9 +478,9 @@ $(window).on("keypress",function(e){
         } else if((e.charCode==115)&&((charX==3)&&(charY==6))&&(thisRoom.bottomDoor)){
             //go down room
             if(!currentRoom.downKey){
-                transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
                 charX=3;
                 charY=0;
+                transferRooms((currentRoom.coordX),(currentRoom.coordY)+1);
                 if(currentRoom.textOnFirstEntry!=undefined&&currentRoom.firstEntry===true){
                     displayHelpText(currentRoom.textOnFirstEntry);
                 }
@@ -600,6 +600,10 @@ function getAdjacent(position){
         $("#character").attr("src","resources/spriteEarbuds.png");
         displayHelpText(currentRoom[prop].textOnPickup);
         currentRoom[prop] = floor;
+        playSound(backgroundMusicOne);
+        for(var i = 0; i < 6; i ++){
+            maps[i].music = backgroundMusicOne;
+        }
     } else {
         if(inventory.length<inventorySpace){
             if(currentRoom[prop].name=="key2"){
@@ -631,6 +635,7 @@ function getAdjacent(position){
 
 function transferRooms(xPos,yPos){
     console.log("x:"+xPos+" y:"+yPos);
+    var lastSong = currentRoom.music;
     for(var i = 0; i<rooms.length; i++){
         if((rooms[i].coordX==xPos)&&(rooms[i].coordY==yPos)){
             currentRoom = rooms[i];
@@ -640,9 +645,12 @@ function transferRooms(xPos,yPos){
                 bottomDoor:false,
                 topDoor:false
             }
-            charX = (currentRoom.playerSpawn%7);
-            charY = (currentRoom.playerSpawn-charX)/7;
+            //charX = (currentRoom.playerSpawn%7);
+            //charY = (currentRoom.playerSpawn-charX)/7;
         }
+    }
+    if(currentRoom.music!=lastSong){
+        transitionSongs(lastSong,currentRoom.music);
     }
 }
 
@@ -974,10 +982,35 @@ function searchArray(array, content){
     return(array.indexOf(content)!=-1);
 }
 
-function playSound(buffer){
-    var source = theAudioContext.createBufferSource();
-    source.buffer = buffer;
-    source.connect(theAudioContext.destination);
-    source.start(0);
+function playSound(audio){
+    if(audio.name!=undefined){
+        audio = audio.audio;
+    }
+    audio.volume = 1;
+    audio.play();
 }
-setTimeout(playSound,10000,backgroundMusicOne.buffer);
+
+function transitionSongs(old,newSnd){
+    if(old.name!=undefined){
+        old= old.audio;
+    }
+    if(newSnd.name!=undefined){
+        newSnd = newSnd.audio;
+    }
+    if(old.volume>=0.1){
+        old.volume-=0.1;
+        setTimeout(transitionSongs,100,old,newSnd);
+    } else if(newSnd.volume===0){
+        old.pause();
+        old.currentTime = 0;
+        newSnd.play()
+        newSnd.volume+=0.1;
+        setTimeout(transitionSongs,100,old,newSnd);
+    } else if(newSnd.volume<1){
+        newSnd.volume+=0.1;
+        setTimeout(transitionSongs,100,old,newSnd);
+    } else {
+        old.pause();
+        old.currentTime = 0;
+    }
+}
