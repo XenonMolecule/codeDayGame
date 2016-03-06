@@ -41,6 +41,7 @@ var displayQueue = [];
 var noSayList = [];
 var globalTextAccess = "";
 var globalTextPositionAccess = 0;
+
 //var love???
 
 $(window).on("resize",function(){
@@ -972,3 +973,11 @@ function miscellaneousFunctions(){
 function searchArray(array, content){
     return(array.indexOf(content)!=-1);
 }
+
+function playSound(buffer){
+    var source = theAudioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(theAudioContext.destination);
+    source.start(0);
+}
+setTimeout(playSound,10000,backgroundMusicOne.buffer);
