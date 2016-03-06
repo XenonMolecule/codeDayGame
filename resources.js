@@ -22,4 +22,5 @@ var key2 = new resource(false, true, "chest", false,"key2",key2Inv,"Oh No! I don
 var stick = new resource(false, true, "chest", false,"stick", stickInv,"What am I going to do with a stick?");
 var string = new resource(false, true, "chest", false,"string", stringInv,"Oh, a string!");
 var lever = new resource(false, false, "switchUp", false, "lever",null,null,function(){});
+var earbuds = new resource(false, true, "chest", false, "earbuds", null, "Who would just leave these headphones here?*N~resources/unknown.png~They're not headphones!  They're earbuds guys.*NWho is there?*N...*NAnybody?*NHm... Must have left.")
 lever.upPos = true;

@@ -38,6 +38,7 @@ var craftingRect2 = {
 $craftCanvas.prop("hidden",true);
 var craftHelpGiven = false;
 var displayQueue = [];
+var noSayList = [];
 var globalTextAccess = "";
 var globalTextPositionAccess = 0;
 //var love???
@@ -589,7 +590,16 @@ function getAdjacent(position){
         prop = "block"+below;
         resource = currentRoom[prop].invObject;
     }
-    if(currentRoom[prop].name!="backpack"){
+    if(currentRoom[prop].name==="backpack"){
+        inventorySpace+=3;
+        removeLocks(3);
+        displayHelpText("Woooooo! I got a backpack! Now I can carry more items to school AND look scholarly!")
+        currentRoom[prop] = floor;
+    } else if(currentRoom[prop].name==="earbuds"){
+        $("#character").attr("src","resources/spriteEarbuds.png");
+        displayHelpText(currentRoom[prop].textOnPickup);
+        currentRoom[prop] = floor;
+    } else {
         if(inventory.length<inventorySpace){
             if(currentRoom[prop].name=="key2"){
                 if(inventory.length==inventorySpace){
@@ -614,11 +624,6 @@ function getAdjacent(position){
                 displayHelpText("Oh no, I don't have enough room for this! I better look for a backpack.");
             }
         }
-    } else {
-        inventorySpace+=3;
-        removeLocks(3);
-        displayHelpText("Woooooo! I got a backpack! Now I can carry more items to school AND look scholarly!")
-        currentRoom[prop] = floor;
     }
 }
 //make it so that if the user interacts with the door it goes to the next room
@@ -648,10 +653,35 @@ function funText(textString, position){
     }
     textArray=[];
     canMove=false;
+    var actualName = "";
+    if($(".face").attr("src")!="resources/face.png"){
+        actualName = "~"+$(".face").attr("src")+"~"+textString;
+    } else {
+        actualName = textString;
+    }
     if(displayQueue.length>0){
-        if(searchArray(displayQueue,textString)){
-            displayQueue.splice(displayQueue.indexOf(textString),1);
+        if(displayQueue.length==1){
+            if(searchArray(displayQueue,actualName)){
+                displayQueue = [];
+                noSayList.push(actualName);
+            }
         }
+        if(searchArray(displayQueue,actualName)){
+            console.log("i'm doing it sheesh...");
+            displayQueue.splice((displayQueue.indexOf(actualName)),1);
+            noSayList.push(actualName);
+        }
+    }
+    if(noSayList.length>5){
+        var newList = [];
+        for(var i = 0; i < noSayList.length; i++){
+            if(i===0){
+                newList[i] = noSayList[5];
+            } else {
+                newList[i] = noSayList[i-1];
+            }
+        }
+        noSayList = newList;
     }
     var textArray = textString.split("");
     //displayText=displayText+textArray[position];
@@ -664,27 +694,27 @@ function funText(textString, position){
     }
 }
 
-function displayHelpText(string){
+function displayHelpText(string, texture){
     var thingsToSay = string.split("*N");
     $(".rpgText").attr("hidden",false);
     if(displayText===""){
         if(displayQueue.length>0){
-            globalTextAccess = displayQueue[0];
-            globalTextPositionAccess = 0;
-            displayText="";
-            funText(displayQueue[0],0);
+            calcDisplay(displayQueue[0]);
         } else {
-            globalTextAccess = thingsToSay[0];
-            globalTextPositionAccess = 0;
-            displayText="";
-            funText(thingsToSay[0],0);
+            calcDisplay(thingsToSay[0]);
             for(var i = 1; i < thingsToSay.length; i++){
+                if(texture!=undefined){
+                    thingsToSay[i] = "~"+texture+"~"+thingsToSay[i];
+                }
                 displayQueue.push(thingsToSay[i]);
             }
         }
     } else {
         for(var i = 0; i < thingsToSay.length; i++){
-            if(!searchArray(displayQueue, thingsToSay[i])){
+            if(!searchArray(displayQueue, thingsToSay[i])&&(!searchArray(noSayList, thingsToSay[i]))){
+                if(texture!=undefined){
+                    thingsToSay[i] = "~"+texture+"~"+thingsToSay[i];
+                }
                 displayQueue.push(thingsToSay[i]);
             }
         }
@@ -692,6 +722,20 @@ function displayHelpText(string){
     if(displayQueue.length>0){
         setTimeout(displayHelpText, 100, displayQueue[0]);
     }
+}
+
+function calcDisplay(textToDisplay){
+    var trueText = textToDisplay.split("~");
+    if(trueText.length>1){
+        $(".face").attr("src",trueText[1]);
+    } else {
+        $(".face").attr("src","resources/face.png");  
+    }
+    var realText = trueText[(trueText.length-1)];
+    globalTextAccess = realText;
+    globalTextPositionAccess = 0;
+    displayText="";
+    funText(realText,0);
 }
 
 function tutorial(run,run1,run2,run3){
