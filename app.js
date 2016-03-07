@@ -53,6 +53,7 @@ $(window).on("resize",function(){
     $(".rpgText").css("margin-top",500);
     $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
     $("#toggleTerminal").css("margin-left",((window.innerWidth/2)-350));
+    $("#terminal").css("margin-left",((window.innerWidth/2)-400));
     console.log(((window.innerWidth/2)-400));
 });
 
@@ -64,6 +65,7 @@ $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
 $("#craftCanvas").css("margin-left","-700px");
 $("#craftCanvas").css("margin-top","0px");
 $("#toggleTerminal").css("margin-left",((window.innerWidth/2)-350));
+$("#terminal").css("margin-left",((window.innerWidth/2)-400));
 
 //Task: Click Responsivness
 //call function on click
@@ -1025,12 +1027,15 @@ $("#toggleTerminal").on("click",function(){
     if($(this).hasClass("termClosed")){
         $(this).removeClass("termClosed");
         $(this).addClass("termOpened");
-        $(this).text("Open Hack Terminal");
-        $(this).css("font-size","72px");
+        $(this).text("Close Hack Terminal");
+        $(this).css("font-size","64px");
+        $("#terminal").prop("hidden",false);
     } else {
         $(this).removeClass("termOpened");
         $(this).addClass("termClosed");
-        $(this).text("Close Hack Terminal");
-        $(this).css("font-size","64px");
+        $(this).text("Open Hack Terminal");
+        $(this).css("font-size","72px");
+        $("#terminal").prop("hidden",true);
     }
-})
+});
+

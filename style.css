@@ -103,3 +103,10 @@ ul{
     cursor:pointer;
     background-color:#000;
 }
+
+#terminal{
+    position:absolute;
+    background-color:#000;
+    margin-top:-422px;
+    z-index:7000;
+}
