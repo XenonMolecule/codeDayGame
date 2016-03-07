@@ -89,3 +89,17 @@ ul{
     position:absolute;
     z-index:3000;
 }
+
+#toggleTerminal{
+    position:absolute;
+    width:700px;
+    height:200px;
+    border-color:#003cb3;
+    border-width:10px;
+    border-radius:30px 30px;
+    font-family: font;
+    font-size:72px;
+    color:#003cb3;
+    cursor:pointer;
+    background-color:#000;
+}

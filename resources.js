@@ -23,4 +23,5 @@ var stick = new resource(false, true, "chest", false,"stick", stickInv,"What am 
 var string = new resource(false, true, "chest", false,"string", stringInv,"Oh, a string!");
 var lever = new resource(false, false, "switchUp", false, "lever",null,null,function(){});
 var earbuds = new resource(false, true, "chest", false, "earbuds", null, "Who would just leave these headphones here?*N~resources/unknown.png~They're not headphones!  They're earbuds guys.*NWho is there?*N...*NAnybody?*NHm... Must have left.")
+var hackComputer = new resource(false, true, "chest", false, "hackComputer", null, "What is this...*NOh, I this looks like it is a mini computer terminal.*N~resources/unknown.png~Indeed it is, you can use it to hack things!*NWowie!*N~resources/unknown.png~Don't say that, it's so CRINGEY*NOh...");
 lever.upPos = true;

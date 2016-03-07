@@ -52,6 +52,7 @@ $(window).on("resize",function(){
     $("#sidebarDiv").css("margin-left",(window.innerWidth/2)+300);
     $(".rpgText").css("margin-top",500);
     $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
+    $("#toggleTerminal").css("margin-left",((window.innerWidth/2)-350));
     console.log(((window.innerWidth/2)-400));
 });
 
@@ -62,6 +63,7 @@ $(".rpgText").css("margin-top",500);
 $(".rpgText").css("margin-left",(window.innerWidth/2)-400);
 $("#craftCanvas").css("margin-left","-700px");
 $("#craftCanvas").css("margin-top","0px");
+$("#toggleTerminal").css("margin-left",((window.innerWidth/2)-350));
 
 //Task: Click Responsivness
 //call function on click
@@ -601,9 +603,13 @@ function getAdjacent(position){
         displayHelpText(currentRoom[prop].textOnPickup);
         currentRoom[prop] = floor;
         playSound(backgroundMusicOne);
-        for(var i = 0; i < 6; i ++){
+        for(var i = 0; i < 7; i ++){
             maps[i].music = backgroundMusicOne;
         }
+    } else if(currentRoom[prop].name==="hackComputer"){
+        displayHelpText(currentRoom[prop].textOnPickup);
+        currentRoom[prop] = floor;
+        $("#toggleTerminal").prop("hidden",false);
     } else {
         if(inventory.length<inventorySpace){
             if(currentRoom[prop].name=="key2"){
@@ -793,7 +799,7 @@ $(".itemHolder").on("click",function(){
     $(".itemHolder").each(function(){
        $(this).removeClass("selected"); 
     });
-    if(!on){
+    if(!on&&(!($(this).children("img").attr("src")==="resources/lock.png"))){
         $(this).addClass("selected");
     }
     var selectedItemTexture = $(".selected img").attr("src");
@@ -1014,3 +1020,17 @@ function transitionSongs(old,newSnd){
         old.currentTime = 0;
     }
 }
+
+$("#toggleTerminal").on("click",function(){
+    if($(this).hasClass("termClosed")){
+        $(this).removeClass("termClosed");
+        $(this).addClass("termOpened");
+        $(this).text("Open Hack Terminal");
+        $(this).css("font-size","72px");
+    } else {
+        $(this).removeClass("termOpened");
+        $(this).addClass("termClosed");
+        $(this).text("Close Hack Terminal");
+        $(this).css("font-size","64px");
+    }
+})
