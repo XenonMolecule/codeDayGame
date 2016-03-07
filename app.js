@@ -41,6 +41,8 @@ var displayQueue = [];
 var noSayList = [];
 var globalTextAccess = "";
 var globalTextPositionAccess = 0;
+var terminalContext = $("#terminal")[0].getContext("2d");
+var terminalOpened = false;
 
 //var love???
 
@@ -288,6 +290,9 @@ function draw(){
     setTimeout(draw,(1000/16));
     drawInventory();
     miscellaneousFunctions();
+    if(terminalOpened){
+        drawTerminal();
+    }
 }
 
 //function that takes in room
@@ -1030,12 +1035,35 @@ $("#toggleTerminal").on("click",function(){
         $(this).text("Close Hack Terminal");
         $(this).css("font-size","64px");
         $("#terminal").prop("hidden",false);
+        terminalOpened = true;
     } else {
         $(this).removeClass("termOpened");
         $(this).addClass("termClosed");
         $(this).text("Open Hack Terminal");
         $(this).css("font-size","72px");
         $("#terminal").prop("hidden",true);
+        terminalOpened = false;
     }
 });
 
+function drawTerminal(){
+    clearTermCanvas();
+    drawTermSeperators();
+}
+
+function drawTermSeperators(){
+    terminalContext.beginPath();
+    terminalContext.moveTo(0,5);
+    terminalContext.strokeStyle = "#001a4d";
+    terminalContext.lineTo(395,5);
+    terminalContext.lineWidth=10;
+    terminalContext.moveTo(395,0);
+    terminalContext.lineTo(395,400);
+    //CONTINUE HERE!!!
+    //moveTo(0,)
+    terminalContext.stroke();
+}
+
+function clearTermCanvas(){
+    terminalContext.clearRect(0, 0, $("#terminal").attr("width"), $("#terminal").attr("height"));
+}

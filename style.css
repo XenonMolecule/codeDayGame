@@ -109,4 +109,6 @@ ul{
     background-color:#000;
     margin-top:-422px;
     z-index:7000;
+    border-color:#001a4d;
+    border-width:10px;
 }
