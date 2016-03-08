@@ -43,6 +43,9 @@ var globalTextAccess = "";
 var globalTextPositionAccess = 0;
 var terminalContext = $("#terminal")[0].getContext("2d");
 var terminalOpened = false;
+var lastLines = [];
+var currentLine = "";
+var termElapsedMSec = 0;
 
 //var love???
 
@@ -527,12 +530,15 @@ $(window).on("keypress",function(e){
         }
     }
     if((e.charCode==13)&&(enableDisable)){
+        //make rpg text disappear
         console.log("disappear");
         enableDisable =false;
         $("#textRPG").text("");
         displayText = "";
         $(".rpgText").attr("hidden",true);
-        canMove = true;
+        if(!terminalOpened){
+            canMove = true;
+        }
         stageOfTutorial++;
     } else if((e.charCode==122)&&(displayText!="")){
         globalTextPositionAccess = globalTextAccess.length-1;
@@ -1036,6 +1042,7 @@ $("#toggleTerminal").on("click",function(){
         $(this).css("font-size","64px");
         $("#terminal").prop("hidden",false);
         terminalOpened = true;
+        canMove = false;
     } else {
         $(this).removeClass("termOpened");
         $(this).addClass("termClosed");
@@ -1043,12 +1050,18 @@ $("#toggleTerminal").on("click",function(){
         $(this).css("font-size","72px");
         $("#terminal").prop("hidden",true);
         terminalOpened = false;
+        if(enableDisable){
+            canMove = true;
+        }
     }
 });
+
+var drawTextPosBox = true;
 
 function drawTerminal(){
     clearTermCanvas();
     drawTermSeperators();
+    termConsole();
 }
 
 function drawTermSeperators(){
@@ -1059,11 +1072,50 @@ function drawTermSeperators(){
     terminalContext.lineWidth=10;
     terminalContext.moveTo(395,0);
     terminalContext.lineTo(395,400);
-    //CONTINUE HERE!!!
-    //moveTo(0,)
+    terminalContext.moveTo(0,300);
+    terminalContext.lineTo(400,300);
+    terminalContext.moveTo(5,0);
+    terminalContext.lineTo(5,400);
     terminalContext.stroke();
 }
 
 function clearTermCanvas(){
     terminalContext.clearRect(0, 0, $("#terminal").attr("width"), $("#terminal").attr("height"));
 }
+
+function termConsole(){
+    var fontSize = 20;
+    terminalContext.fillStyle = "#FFF";
+    terminalContext.font= fontSize+"px font";
+    for(var i = 0; i < lastLines.length; i ++){
+        terminalContext.fillText(lastLines[i],15,(370-(i*fontSize)));
+    }
+    if(drawTextPosBox){
+        terminalContext.beginPath();
+        terminalContext.rect((15+(currentLine.length*(fontSize/2))),375,fontSize/2,fontSize);
+        terminalContext.fill();
+        terminalContext.closePath();
+    }
+}
+
+function saveLine(line){
+    var backupArray = [];
+    backupArray.push(line);
+    for(var i = 0; i < lastLines.length; i++){
+        backupArray.push(lastLines[i]);
+    }
+    if(backupArray.length>3){
+        backupArray.pop();
+    }
+    lastLines = backupArray;
+}
+
+function manipulateElapsedMSecs(){
+    termElapsedMSec++;
+    if((termElapsedMSec%100)===0){
+        drawTextPosBox = !drawTextPosBox;
+    }
+    setTimeout(manipulateElapsedMSecs,1);
+}
+
+manipulateElapsedMSecs();
