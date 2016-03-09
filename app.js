@@ -46,6 +46,8 @@ var terminalOpened = false;
 var lastLines = [];
 var currentLine = "";
 var termElapsedMSec = 0;
+var backupCurrentLine = "";
+var lineBrowsingPos = 0;
 
 //var love???
 
@@ -543,6 +545,18 @@ $(window).on("keypress",function(e){
     } else if((e.charCode==122)&&(displayText!="")){
         globalTextPositionAccess = globalTextAccess.length-1;
     }
+    
+    if(terminalOpened&&terminalContext.measureText(currentLine).width<360){
+        currentLine += String.fromCharCode(e.charCode);
+    }
+    if(e.charCode==13&&terminalOpened){
+        //send command based on submitted text
+        saveLine(currentLine);
+        currentLine = "";
+        lineBrowsingPos = -1;
+        backupCurrentLine = null;
+    }
+    
 });
 
 function glideX(currentPos,newPos){
@@ -695,7 +709,6 @@ function funText(textString, position){
             }
         }
         if(searchArray(displayQueue,actualName)){
-            console.log("i'm doing it sheesh...");
             displayQueue.splice((displayQueue.indexOf(actualName)),1);
             noSayList.push(actualName);
         }
@@ -1092,10 +1105,11 @@ function termConsole(){
     }
     if(drawTextPosBox){
         terminalContext.beginPath();
-        terminalContext.rect((15+(currentLine.length*(fontSize/2))),375,fontSize/2,fontSize);
+        terminalContext.rect((15+(terminalContext.measureText(currentLine).width)),375,fontSize/2,fontSize);
         terminalContext.fill();
         terminalContext.closePath();
     }
+    terminalContext.fillText(currentLine,15, 393);
 }
 
 function saveLine(line){
@@ -1119,3 +1133,32 @@ function manipulateElapsedMSecs(){
 }
 
 manipulateElapsedMSecs();
+
+$(window).on("keydown",function(e){
+    if(e.keyCode === 8 && terminalOpened && currentLine.length > 0){
+        var tempLine = currentLine.split("");
+        currentLine = "";
+        tempLine.pop();
+        for(var i = 0; i < tempLine.length; i ++){
+            currentLine += tempLine[i];
+        }
+    } else if(e.keyCode === 38 && terminalOpened){
+        if(backupCurrentLine == null){
+            backupCurrentLine = currentLine;
+        }
+        if(lineBrowsingPos<lastLines.length-1){
+            lineBrowsingPos++;
+        }
+        currentLine = (lastLines[lineBrowsingPos]).trim();
+    } else if (e.keyCode === 40 && terminalOpened){
+        if(lineBrowsingPos>0){
+            lineBrowsingPos--;
+            currentLine = (lastLines[lineBrowsingPos]).trim();
+        } else {
+            if(lineBrowsingPos>-1){
+                lineBrowsingPos--;
+            }
+            currentLine = backupCurrentLine;
+        }
+    }
+});
