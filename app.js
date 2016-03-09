@@ -1094,7 +1094,6 @@ function drawTermSeperators(){
 
 function clearTermCanvas(){
     terminalContext.clearRect(0, 0, $("#terminal").attr("width"), $("#terminal").attr("height"));
-}
 
 function termConsole(){
     var fontSize = 20;
