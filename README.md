@@ -18,7 +18,7 @@ Also go hit up [this Medium article about CodeDay](https://medium.com/@sethtrei/
 There were a bunch of bugs to fix and there still are some.
 
 ## Accomplishments that we are proud of
-We did the entire thing in the canvas.
+We did the entire thing in the canvas with some html elements.
 
 
 ## What's next for Ter0: The Awakening
