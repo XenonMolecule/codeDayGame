@@ -1160,5 +1160,7 @@ $(window).on("keydown",function(e){
             }
             currentLine = backupCurrentLine;
         }
+    } else if(e.keyCode === 8){
+        e.preventDefault();
     }
 });
