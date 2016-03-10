@@ -570,7 +570,9 @@ function glideX(currentPos,newPos){
     if(charX!=newPos){
         setTimeout(glideX,1,currentPos,newPos);
     }else{
-        canMove = true;
+        if(!terminalOpened&&!enableDisable){
+            canMove = true;
+        }
     }
 }
 
@@ -585,7 +587,9 @@ function glideY(currentPos,newPos){
     if(charY!=newPos){
         setTimeout(glideY,1,currentPos,newPos);
     }else{
-        canMove = true;
+        if(!terminalOpened&&!enableDisable){
+            canMove = true;
+        }
     }
 }
 
@@ -1063,7 +1067,7 @@ $("#toggleTerminal").on("click",function(){
         $(this).css("font-size","72px");
         $("#terminal").prop("hidden",true);
         terminalOpened = false;
-        if(enableDisable){
+        if(!enableDisable){
             canMove = true;
         }
     }
