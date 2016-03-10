@@ -1135,6 +1135,7 @@ manipulateElapsedMSecs();
 
 $(window).on("keydown",function(e){
     if(e.keyCode === 8 && terminalOpened && currentLine.length > 0){
+        e.preventDefault();
         var tempLine = currentLine.split("");
         currentLine = "";
         tempLine.pop();
