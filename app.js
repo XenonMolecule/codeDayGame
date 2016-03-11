@@ -19,7 +19,6 @@ var thisRoom = {
 }
 var displayText="";
 var enableDisable=false;
-var stageOfTutorial=0;
 var craftingAnimCanvas = "<canvas id='craftCanvas' height = '700' width = '700'></canvas>";
 var $craftCanvas = $(craftingAnimCanvas);
 $("#game").after($craftCanvas);
@@ -144,7 +143,6 @@ function pathfinding(map,start,end){
         //cycle through open list, finding new nodes to add
         //repeat calculations until you find the end node
         //sortByF();
-        console.log("trying");
         console.log(openList.length);
     } while(openList.length>0);
     //go through the parent nodes of the successful path
@@ -175,7 +173,6 @@ function calcAdjacent(currentNode){
         //console.log(above);
         if(above == closedList[i]){
             restrictions.push("above");
-            console.log(pass);
         } else if(left == closedList[i]){
             restrictions.push("left");
         } else if(right == closedList[i]){
@@ -541,7 +538,6 @@ $(window).on("keypress",function(e){
         if(!terminalOpened){
             canMove = true;
         }
-        stageOfTutorial++;
     } else if((e.charCode==122)&&(displayText!="")){
         globalTextPositionAccess = globalTextAccess.length-1;
     }
@@ -600,7 +596,6 @@ function getPassability(block){
 
 function getGrabbability(block){
     var prop = "block"+block;
-    console.log(prop);
     return currentRoom[prop].grabbable;
 }
 
@@ -783,35 +778,9 @@ function calcDisplay(textToDisplay){
     funText(realText,0);
 }
 
-function tutorial(run,run1,run2,run3){
-    if(run){
-        if(run3){
-            displayHelpText("Woah, where am I?");
-            run3=false;
-        }
-        if(stageOfTutorial==1){
-            if(run1){
-                displayHelpText("Maybe I should look for chests to open by pressing enter");
-                run1=false;
-            }
-        }
-        if(stageOfTutorial==2){
-            if(run2){
-                displayHelpText("I think I can move with the w,a,s, and d keys");
-                run2=false;
-            }
-        }
-        if(stageOfTutorial<3){
-            setTimeout(tutorial,10,true,run1,run2,run3);
-        }
-    }
-}
-
-tutorial(true,true,true,true);
-
 function removeLocks(amt){
     for(var i=0; i<amt;i++){
-        $("#slot"+((inventorySpace-3)+i)).hide(500);
+        $("#slot"+((inventorySpace-amt)+i)).hide(500);
         setTimeout(setResources,500,i);
     }
 }
@@ -1168,3 +1137,5 @@ $(window).on("keydown",function(e){
         e.preventDefault();
     }
 });
+
+displayHelpText(currentRoom.textOnFirstEntry);
