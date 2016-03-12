@@ -365,6 +365,7 @@ $(window).on("keypress",function(e){
             //down
             glideY(charY,(charY+1));
         } else if((e.charCode==13)){
+            e.preventDefault();
             getAdjacent(pos);
         } else if((e.charCode==97)&&((charX==0)&&(charY==3))&&(thisRoom.leftDoor)){
             //go left room
@@ -530,6 +531,7 @@ $(window).on("keypress",function(e){
     }
     if((e.charCode==13)&&(enableDisable)){
         //make rpg text disappear
+        e.preventDefault();
         console.log("disappear");
         enableDisable =false;
         $("#textRPG").text("");
@@ -547,6 +549,7 @@ $(window).on("keypress",function(e){
     }
     if(e.charCode==13&&terminalOpened){
         //send command based on submitted text
+        e.preventDefault();
         saveLine(currentLine);
         currentLine = "";
         lineBrowsingPos = -1;
@@ -1139,3 +1142,4 @@ $(window).on("keydown",function(e){
 });
 
 displayHelpText(currentRoom.textOnFirstEntry);
+currentRoom.firstEntry = false;
