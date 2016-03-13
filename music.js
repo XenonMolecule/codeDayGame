@@ -16,3 +16,4 @@ function initializeSound(src){
 
 var backgroundMusicOne = new sound("backgroundMusicOne","resources/music.mp3");
 var silence = new sound("silence","resources/blank.wav");
+var backgroundMusicTwo = new sound("backgroundMusicTwo","resources/backMusic2.mp3");
