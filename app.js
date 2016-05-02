@@ -1138,6 +1138,12 @@ $(window).on("keydown",function(e){
         }
     } else if(e.keyCode === 8){
         e.preventDefault();
+    } else if(e.keyCode === 32 && terminalOpened){
+        //Somehow spacebar can close the terminal
+        e.preventDefault();
+        if(terminalOpened&&terminalContext.measureText(currentLine).width<360){
+            currentLine += " ";
+        }
     }
 });
 
